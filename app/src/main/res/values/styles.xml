@@ -1,0 +1,29 @@
+<resources>
+
+    <color name="nav_list_item_bg">#FFF</color>
+    <color name="nav_list_bg">#FFF</color>
+    <color name="nav_list_item_bg_pressed">#DDD</color>
+    <color name="nav_list_item_bg_selected">#EEE</color>
+    <color name="nav_list_item_text">#555</color>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppTheme.NavDrawer">
+        <item name="android:background">@color/nav_list_bg</item>
+    </style>
+
+    <style name="AppTheme.NavDrawer.Item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:background">@drawable/nav_list_item_bg</item>
+        <item name="android:textColor">@color/nav_list_item_text</item>
+    </style>
+
+</resources>
