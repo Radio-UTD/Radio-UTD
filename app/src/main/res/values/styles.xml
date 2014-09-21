@@ -2,7 +2,7 @@
 
     <color name="nav_list_item_bg">#FFF</color>
     <color name="nav_list_bg">#FFF</color>
-    <color name="nav_list_item_bg_pressed">#DDD</color>
+    <!--<color name="nav_list_item_bg_pressed">#DDD</color>-->
     <color name="nav_list_item_bg_selected">#EEE</color>
     <color name="nav_list_item_text">#555</color>
     <!-- Base application theme. -->
