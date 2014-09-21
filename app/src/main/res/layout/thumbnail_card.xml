@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background"
+    >
+
+    <ImageView
+        android:id="@+id/show_card_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitStart"
+        android:adjustViewBounds="true"
+        android:src="@drawable/temp_album_art" />
+
+    <LinearLayout
+        android:id="@+id/show_card_text"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camping Out with Camps"
+            style="@style/ThumbnailCard.Title"
+            android:id="@+id/show_card_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ThumbnailCard.Subtitle"
+            android:text="12PM - 2PM"
+            android:id="@+id/show_card_subtitle" />
+
+    </LinearLayout>
+
+</LinearLayout
+    >
