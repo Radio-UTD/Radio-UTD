@@ -1,4 +1,4 @@
-package radio.utd.com.radioutd;
+package com.utd.radio;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package radio.utd.com.radioutd;
+package com.utd.radio;
 
 import android.support.v4.app.Fragment;
 

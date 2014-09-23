@@ -1,4 +1,4 @@
-package radio.utd.com.radioutd;
+package com.utd.radio;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
