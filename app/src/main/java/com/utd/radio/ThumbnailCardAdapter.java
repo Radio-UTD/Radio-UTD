@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,26 +14,27 @@ import java.util.List;
 /**
  * Created by Rahat on 9/22/2014.
  */
-public class NavigationDrawerAdapter extends BaseAdapter {
-    List<NavigationDrawerItem> list;
+public class ThumbnailCardAdapter extends BaseAdapter {
+    
     Activity context;
+    List<ThumbnailCard> list;
 
-    public NavigationDrawerAdapter(Activity context)
+    public ThumbnailCardAdapter(Activity context)
     {
         super();
         this.context = context;
-        this.list = new ArrayList<NavigationDrawerItem>();
+        this.list = new ArrayList<ThumbnailCard>();
     }
 
-    public NavigationDrawerAdapter(Activity context, List<NavigationDrawerItem> list) {
+    public ThumbnailCardAdapter(Activity context, List<ThumbnailCard> list) {
         this(context);
         this.list.addAll(list);
     }
 
-    public NavigationDrawerAdapter(Activity context, NavigationDrawerItem[] array) {
+    public ThumbnailCardAdapter(Activity context, ThumbnailCard[] array) {
         this(context, Arrays.asList(array));
     }
-
+    
     @Override
     public int getCount() {
         return list.size();
@@ -48,20 +50,21 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         return i;
     }
 
-    public void addItem(NavigationDrawerItem item)
+    public void addCard(ThumbnailCard card)
     {
-        list.add(item);
+        list.add(card);
         notifyDataSetChanged();
     }
 
     @Override
     public View getView(int i, View view, ViewGroup parent) {
-        // TODO: set icon
         if(view == null)
         {
-            view = context.getLayoutInflater().inflate(R.layout.navigation_drawer_item, parent, false);
+            view = context.getLayoutInflater().inflate(R.layout.thumbnail_card, parent, false);
         }
-        ((TextView)view.findViewById(R.id.nav_drawer_item_label)).setText(list.get(i).getTitle());
+        ((TextView)view.findViewById(R.id.show_card_title)).setText(list.get(i).getTitle());
+        ((TextView)view.findViewById(R.id.show_card_subtitle)).setText(list.get(i).getSubtitle());
+        ((ImageView)view.findViewById(R.id.show_card_image)).setImageDrawable(list.get(i).getThumbnail());
         return view;
     }
 }

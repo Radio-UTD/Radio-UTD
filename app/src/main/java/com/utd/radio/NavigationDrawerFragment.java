@@ -100,10 +100,10 @@ public class NavigationDrawerFragment extends Fragment {
                 return PlaceholderFragment.newInstance(getTitle());
             }
         });
-        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), PlaceholderFragment.class){
+        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), ShowsFragment.class){
             @Override
             public Fragment getFragmentInstance() {
-                return PlaceholderFragment.newInstance(getTitle());
+                return ShowsFragment.newInstance(ShowsFragment.Day.Monday);
             }
         });
         mDrawerListView.setAdapter(mDrawerAdapter);

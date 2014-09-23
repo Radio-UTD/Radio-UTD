@@ -1,5 +1,8 @@
 <resources>
 
+    <color name="card_shadow">#14000000</color>
+    <color name="card_color">#FFF</color>
+
     <color name="main_bg">#EEE</color>
     <color name="nav_list_item_bg">#FFF</color>
     <color name="nav_list_bg">#FFF</color>
@@ -38,19 +41,35 @@
     <style name="ThumbnailCard.Title">
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
         <!--<item name="android:background">#0000</item>-->
         <item name="android:textColor">@color/primary_text_color</item>
     </style>
 
     <style name="ThumbnailCard.Subtitle">
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
         <!--<item name="android:background">#0000</item>-->
         <item name="android:textColor">@color/tertiary_text_color</item>
+    </style>
+
+    <style name="ThumbnailCardGrid">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:numColumns">2</item>
+        <item name="android:stretchMode">columnWidth</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:verticalSpacing">8dp</item>
+        <item name="android:horizontalSpacing">8dp</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
 </resources>
