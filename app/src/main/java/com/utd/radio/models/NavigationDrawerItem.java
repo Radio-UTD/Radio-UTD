@@ -1,4 +1,4 @@
-package com.utd.radio;
+package com.utd.radio.models;
 
 import android.support.v4.app.Fragment;
 
@@ -10,7 +10,7 @@ public abstract class NavigationDrawerItem {
     private String title;
     private Class<? extends Fragment> fragmentClass;
 
-    NavigationDrawerItem(String title, Class<? extends Fragment> fragmentClass)
+    public NavigationDrawerItem(String title, Class<? extends Fragment> fragmentClass)
     {
         this.title = title;
         this.fragmentClass = fragmentClass;

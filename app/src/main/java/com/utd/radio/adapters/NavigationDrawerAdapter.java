@@ -1,11 +1,13 @@
-package com.utd.radio;
+package com.utd.radio.adapters;
 
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.utd.radio.R;
+import com.utd.radio.models.NavigationDrawerItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,27 +16,26 @@ import java.util.List;
 /**
  * Created by Rahat on 9/22/2014.
  */
-public class ThumbnailCardAdapter extends BaseAdapter {
-    
+public class NavigationDrawerAdapter extends BaseAdapter {
+    List<NavigationDrawerItem> list;
     Activity context;
-    List<ThumbnailCard> list;
 
-    public ThumbnailCardAdapter(Activity context)
+    public NavigationDrawerAdapter(Activity context)
     {
         super();
         this.context = context;
-        this.list = new ArrayList<ThumbnailCard>();
+        this.list = new ArrayList<NavigationDrawerItem>();
     }
 
-    public ThumbnailCardAdapter(Activity context, List<ThumbnailCard> list) {
+    public NavigationDrawerAdapter(Activity context, List<NavigationDrawerItem> list) {
         this(context);
         this.list.addAll(list);
     }
 
-    public ThumbnailCardAdapter(Activity context, ThumbnailCard[] array) {
+    public NavigationDrawerAdapter(Activity context, NavigationDrawerItem[] array) {
         this(context, Arrays.asList(array));
     }
-    
+
     @Override
     public int getCount() {
         return list.size();
@@ -50,21 +51,20 @@ public class ThumbnailCardAdapter extends BaseAdapter {
         return i;
     }
 
-    public void addCard(ThumbnailCard card)
+    public void addItem(NavigationDrawerItem item)
     {
-        list.add(card);
+        list.add(item);
         notifyDataSetChanged();
     }
 
     @Override
     public View getView(int i, View view, ViewGroup parent) {
+        // TODO: set icon
         if(view == null)
         {
-            view = context.getLayoutInflater().inflate(R.layout.thumbnail_card, parent, false);
+            view = context.getLayoutInflater().inflate(R.layout.navigation_drawer_item, parent, false);
         }
-        ((TextView)view.findViewById(R.id.show_card_title)).setText(list.get(i).getTitle());
-        ((TextView)view.findViewById(R.id.show_card_subtitle)).setText(list.get(i).getSubtitle());
-        ((ImageView)view.findViewById(R.id.show_card_image)).setImageDrawable(list.get(i).getThumbnail());
+        ((TextView)view.findViewById(R.id.nav_drawer_item_label)).setText(list.get(i).getTitle());
         return view;
     }
 }

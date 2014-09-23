@@ -1,4 +1,4 @@
-package com.utd.radio;
+package com.utd.radio.models;
 
 import android.graphics.drawable.Drawable;
 

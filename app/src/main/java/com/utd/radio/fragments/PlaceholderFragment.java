@@ -1,4 +1,4 @@
-package com.utd.radio;
+package com.utd.radio.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.utd.radio.R;
+import com.utd.radio.RadioActivity;
 
 /**
  * A placeholder fragment containing a simple view.

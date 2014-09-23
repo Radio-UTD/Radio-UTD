@@ -1,4 +1,4 @@
-package com.utd.radio;
+package com.utd.radio.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+
+import com.utd.radio.R;
+import com.utd.radio.RadioActivity;
+import com.utd.radio.models.ThumbnailCard;
+import com.utd.radio.adapters.ThumbnailCardAdapter;
 
 /**
  * Created by Rahat on 9/22/2014.
