@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
@@ -48,6 +47,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
+    private NavigationDrawerAdapter mDrawerAdapter;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -70,9 +70,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
 //            mFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -93,15 +90,29 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                R.layout.navigation_list_item,
-                R.id.nav_list_item_label,
-                new String[]{
-                        getString(R.string.drawer_title_listen),
-                        getString(R.string.drawer_title_shows),
-                }));
+
+        // This is where you add items that will be in the nav list
+        // TODO: make this less dumb
+        mDrawerAdapter = new NavigationDrawerAdapter(this.getActivity());
+        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_listen), PlaceholderFragment.class){
+            @Override
+            public Fragment getFragmentInstance() {
+                return PlaceholderFragment.newInstance(getTitle());
+            }
+        });
+        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), PlaceholderFragment.class){
+            @Override
+            public Fragment getFragmentInstance() {
+                return PlaceholderFragment.newInstance(getTitle());
+            }
+        });
+        mDrawerListView.setAdapter(mDrawerAdapter);
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        // Select either the default item (0) or the last selected item.
+        selectItem(mCurrentSelectedPosition);
+
         return mDrawerListView;
     }
 
@@ -192,7 +203,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected((NavigationDrawerItem)mDrawerAdapter.getItem(position));
         }
     }
 
@@ -256,6 +267,6 @@ public class NavigationDrawerFragment extends Fragment {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(NavigationDrawerItem item);
     }
 }

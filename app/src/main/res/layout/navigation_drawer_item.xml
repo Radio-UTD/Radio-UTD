@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_list_item_label"
+    android:id="@+id/nav_drawer_item_label"
     style="@style/AppTheme.NavDrawer.Item"
     tools:text="List Item"
     >
