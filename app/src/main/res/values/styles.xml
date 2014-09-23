@@ -8,13 +8,23 @@
     <color name="nav_list_bg">#FFF</color>
     <!--<color name="nav_list_item_bg_pressed">#DDD</color>-->
     <color name="nav_list_item_bg_selected">#EEE</color>
+
     <color name="primary_text_color">#555</color>
     <color name="secondary_text_color">#999</color>
     <color name="tertiary_text_color">#B5B5B5</color>
+
+    <color name="action_bar_color">#E98300</color>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/main_bg</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/action_bar_color</item>
+        <item name="background">@color/action_bar_color</item>
     </style>
 
     <style name="AppTheme.NavDrawer">

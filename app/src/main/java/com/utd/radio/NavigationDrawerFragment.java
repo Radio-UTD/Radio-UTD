@@ -97,7 +97,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_listen), PlaceholderFragment.class){
             @Override
             public Fragment getFragmentInstance() {
-                return PlaceholderFragment.newInstance(getTitle());
+                return PlaceholderFragment.newInstance();
             }
         });
         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), ShowsFragment.class){

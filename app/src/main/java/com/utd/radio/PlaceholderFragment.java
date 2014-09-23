@@ -21,12 +21,8 @@ public class PlaceholderFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PlaceholderFragment newInstance(String title) {
-        PlaceholderFragment fragment = new PlaceholderFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_TITLE, title);
-        fragment.setArguments(args);
-        return fragment;
+    public static PlaceholderFragment newInstance() {
+        return new PlaceholderFragment();
     }
 
     public PlaceholderFragment() {
@@ -43,6 +39,6 @@ public class PlaceholderFragment extends Fragment {
         super.onAttach(activity);
 //        ((RadioActivity) activity).onSectionAttached(
 //                getArguments().getInt(ARG_SECTION_NUMBER));
-        ((RadioActivity) activity).restoreActionBar(getArguments().getString(ARG_TITLE));
+        ((RadioActivity) activity).restoreActionBar(getString(R.string.app_name));
     }
 }

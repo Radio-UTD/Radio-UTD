@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 /**
  * Created by Rahat on 9/22/2014.
  */
-public class NavigationDrawerItem {
+public abstract class NavigationDrawerItem {
     // TODO: add icons to items
     private String title;
     private Class<? extends Fragment> fragmentClass;
@@ -24,14 +24,5 @@ public class NavigationDrawerItem {
         return fragmentClass;
     }
 
-    public Fragment getFragmentInstance() {
-        try
-        {
-            return fragmentClass.newInstance();
-        } catch(InstantiationException e) {
-            return null;
-        } catch(IllegalAccessException e) {
-            return null;
-        }
-    }
+    public abstract Fragment getFragmentInstance();
 }
