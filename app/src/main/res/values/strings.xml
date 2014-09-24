@@ -4,9 +4,11 @@
     <string name="app_name">Radio UTD</string>
     <string name="drawer_title_listen">Listen</string>
     <string name="drawer_title_shows">Shows</string>
+    <string name="drawer_title_social">Social</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
