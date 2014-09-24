@@ -98,10 +98,10 @@ public class NavigationDrawerFragment extends Fragment {
         // This is where you add items that will be in the nav list
         // TODO: make this less dumb
         mDrawerAdapter = new NavigationDrawerAdapter(this.getActivity());
-        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_listen), PlaceholderFragment.class){
+        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_listen), RadioFragment.class){
             @Override
             public Fragment getFragmentInstance() {
-                return PlaceholderFragment.newInstance();
+                return RadioFragment.newInstance();
             }
         });
         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), ShowsFragment.class){

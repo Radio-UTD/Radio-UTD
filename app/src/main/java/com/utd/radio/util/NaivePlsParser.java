@@ -1,3 +1,5 @@
+package com.utd.radio.util;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public class NaivePlsParser {
 
-    private List<URL> URLs;
+    private List<String> URLs;
 
     public NaivePlsParser(URL url) throws IOException {
        URLs = parseURLs(getPls(url));
@@ -37,20 +39,20 @@ public class NaivePlsParser {
         return lines;
     }
 
-    private List<URL> parseURLs(List<String> lines) throws MalformedURLException {
-        List<URL> URLs = new ArrayList<URL>();
+    private List<String> parseURLs(List<String> lines) throws MalformedURLException {
+        List<String> URLs = new ArrayList<String>();
         for(String line : lines)
         {
             line = line.trim().toLowerCase();
             if(line.indexOf("http") != -1)
             {
-                URLs.add(new URL(line.substring(line.indexOf("http"))));
+                URLs.add(line.substring(line.indexOf("http")));
             }
         }
         return URLs;
     }
 
-    public List<URL> getURLs()
+    public List<String> getURLs()
     {
         return URLs;
     }
