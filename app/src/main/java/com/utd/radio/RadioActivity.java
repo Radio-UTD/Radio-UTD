@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.utd.radio.fragments.NavigationDrawerFragment;
 import com.utd.radio.models.NavigationDrawerItem;
@@ -12,6 +13,12 @@ import com.utd.radio.models.NavigationDrawerItem;
 
 public class RadioActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    public static final String TAG = "RADIOUTD";
+    public static void log(String str)
+    {
+        Log.d(TAG, str);
+    }
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
