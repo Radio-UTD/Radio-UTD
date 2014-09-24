@@ -110,6 +110,12 @@ public class NavigationDrawerFragment extends Fragment {
                 return ShowsFragment.newInstance(ShowsFragment.Day.Monday);
             }
         });
+        mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_social), SocialFragment.class){
+            @Override
+            public Fragment getFragmentInstance() {
+                return SocialFragment.newInstance();
+            }
+        });
         mDrawerListView.setAdapter(mDrawerAdapter);
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
