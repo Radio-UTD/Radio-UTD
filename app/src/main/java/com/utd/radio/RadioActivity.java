@@ -20,6 +20,7 @@ public class RadioActivity extends ActionBarActivity
         Log.d(TAG, str);
     }
 
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -38,7 +39,6 @@ public class RadioActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
-
     @Override
     public void onNavigationDrawerItemSelected(NavigationDrawerItem item) {
         // update the main content by replacing fragments

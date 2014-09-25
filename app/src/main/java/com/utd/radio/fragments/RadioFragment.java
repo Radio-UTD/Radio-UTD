@@ -30,7 +30,6 @@ public class RadioFragment extends Fragment {
 
     ImageButton playPauseButton;
 
-
     RadioService radioService;
     boolean isBound;
 
@@ -40,7 +39,7 @@ public class RadioFragment extends Fragment {
             isBound = true;
 
             RadioActivity.log("RadioFragment.onServiceConnected");
-            Toast.makeText(RadioFragment.this.getActivity(), "binded to service yay", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(RadioFragment.this.getActivity(), "Sucessfully binded to services!", Toast.LENGTH_SHORT).show();
             radioService = ((RadioService.RadioBinder) service).getService();
             playPauseButton.setImageDrawable(getResources().getDrawable(radioService.isPlaying() ? R.drawable.ic_action_pause : R.drawable.ic_action_play));
             playPauseButton.setEnabled(false);
@@ -48,6 +47,9 @@ public class RadioFragment extends Fragment {
                 @Override
                 public void onReady() {
                     playPauseButton.setEnabled(true);
+                    //Click it as to auto-play the music
+                    //We can remove this for later or put it into a setting
+                    playPauseButton.performClick();
                 }
             });
 
@@ -104,6 +106,7 @@ public class RadioFragment extends Fragment {
 
         return view;
     }
+
 
     @Override
     public void onResume() {

@@ -11,9 +11,17 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.widget.Toast;
 
+import org.apache.http.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import com.utd.radio.util.NaivePlsParser;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -38,6 +46,12 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     private RadioBinder binder = new RadioBinder();
 
+    public static String CurrentArtist = "";
+    public static String CurrentAlbum = "";
+    public static String CurrentSong = "";
+    public static String CurrentShow = "";
+    public static String CurrentShowTime = "";
+
     public RadioService() {
     }
 
@@ -60,7 +74,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                 stop();
         }
         else {
-            initMediaPlayer(false);
+            initMediaPlayer(true);
         }
 
         return Service.START_REDELIVER_INTENT;
@@ -68,6 +82,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     public void initMediaPlayer(final boolean autoPlay)
     {
+
         // Already initialized
         if(mediaPlayer != null)
             return;
@@ -151,11 +166,66 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
             am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
-            Intent avrcp = new Intent("com.android.music.metachanged");
-            avrcp.putExtra("track", "Sandstorm");
-            avrcp.putExtra("artist", "Darude");
-            avrcp.putExtra("album", "Runescape Classics Vol 2");
-            sendBroadcast(avrcp);
+            updateCurrentlyPlaying(true);
+        }
+    }
+
+
+    public void updateCurrentlyPlaying(boolean isPlaying) {
+
+        if(isPlaying == false) {
+            CurrentArtist = "";
+            CurrentAlbum = "";
+            CurrentSong = "";
+            CurrentShow = "";
+        } else {
+            AsyncTask<String, Void, String> getting = new AsyncTask<String, Void, String>() {
+                @Override
+                protected String doInBackground(String... params) {
+                    try
+                    {
+                        HttpClient httpclient = new DefaultHttpClient();
+                        HttpGet httpget = new HttpGet("http://www.radioutd.com/tuner/reload.php");
+                        HttpResponse response = httpclient.execute(httpget);
+                        HttpEntity entity = response.getEntity();
+                        InputStream is = entity.getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                        StringBuilder sb = new StringBuilder();
+                        String line = null;
+                        while ((line = reader.readLine()) != null)
+                            sb.append(line + "\n");
+                        String bodyHtml = sb.toString();
+                        is.close();
+
+
+                        CurrentArtist = bodyHtml.substring(bodyHtml.indexOf("<artist>") + 8, bodyHtml.indexOf("</artist>"));
+                        CurrentAlbum = bodyHtml.substring(bodyHtml.indexOf("<song>") + 6, bodyHtml.indexOf("</song>"));
+                        CurrentSong = bodyHtml.substring(bodyHtml.indexOf("<album>") + 6, bodyHtml.indexOf("</album>"));
+                        CurrentShow = "???";
+                        CurrentShowTime = "???";
+
+                        Toast.makeText(RadioService.this, CurrentSong, Toast.LENGTH_LONG).show();
+
+                    } catch (MalformedURLException e) {
+                        Toast.makeText(RadioService.this, "Dumb thing number 1", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        Toast.makeText(RadioService.this, "Dumb thing number 2", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+
+
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(String url) {
+                    Intent avrcp = new Intent("com.android.music.metachanged");
+                    avrcp.putExtra("track", CurrentSong);
+                    avrcp.putExtra("artist", CurrentArtist);
+                    avrcp.putExtra("album", CurrentAlbum);
+                }
+            }.execute();
         }
     }
 
