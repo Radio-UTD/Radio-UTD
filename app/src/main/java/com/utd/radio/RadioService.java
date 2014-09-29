@@ -1,6 +1,9 @@
 package com.utd.radio;
 
+import android.app.Activity;
+import com.utd.radio.R;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -9,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.*;
@@ -16,6 +21,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.utd.radio.fragments.RadioFragment;
 import com.utd.radio.util.NaivePlsParser;
 
 import java.io.BufferedReader;
@@ -25,6 +31,9 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     public static final String urlStr = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
@@ -43,6 +52,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     // TODO: cpu lock
     // TODO: wake lock
+    // TODO: music stops/starts with notifications that make noises (i.e. FB mess.)
 
     private RadioBinder binder = new RadioBinder();
 
@@ -76,6 +86,13 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         else {
             initMediaPlayer(true);
         }
+
+        ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
+        scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+                updateCurrentlyPlaying(isPlaying());
+            }
+        }, 0, 40, TimeUnit.SECONDS);
 
         return Service.START_REDELIVER_INTENT;
     }
@@ -166,7 +183,58 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
             am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
-            updateCurrentlyPlaying(true);
+            updateCurrentlyPlaying(true);     //This shit is f'ing broken, doe.
+        }
+    }
+
+
+
+    private class MetaGrab extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpGet httpget = new HttpGet("http://www.radioutd.com/tuner/reload.php");
+                HttpResponse response = httpclient.execute(httpget);
+                HttpEntity entity = response.getEntity();
+                InputStream is = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while ((line = reader.readLine()) != null)
+                    sb.append(line + "\n");
+                String bodyHtml = sb.toString();
+                is.close();
+
+                CurrentArtist = bodyHtml.substring(bodyHtml.indexOf("<artist>") + 8, bodyHtml.indexOf("</artist>"));
+                CurrentAlbum = bodyHtml.substring(bodyHtml.indexOf("<album>") + 7, bodyHtml.indexOf("</album>"));
+                CurrentSong = bodyHtml.substring(bodyHtml.indexOf("<song>") + 6, bodyHtml.indexOf("</song>"));
+                CurrentShow = "???";
+                CurrentShowTime = "???";
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                RadioActivity.log(e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Intent avrcp = new Intent("com.android.music.metachanged");
+            avrcp.putExtra("track", CurrentSong);
+            avrcp.putExtra("artist", CurrentArtist);
+            avrcp.putExtra("album", CurrentAlbum);
+            sendBroadcast(avrcp);
+            TextView currentlyplayingtext;
+            currentlyplayingtext = (TextView) findViewById(R.id.currentlyplayingsongtextivew);
+            currentlyplayingtext.setText(CurrentSong + "\n" + CurrentArtist + "\n" + CurrentAlbum);
+            TextView currentlyshowingtext;
+            currentlyshowingtext = (TextView) findViewById(R.id.currentlyplayingshowtextview);
+            currentlyshowingtext.setText(CurrentShow);
+            //Toast.makeText(RadioService.this, CurrentSong, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -178,54 +246,21 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             CurrentAlbum = "";
             CurrentSong = "";
             CurrentShow = "";
+            Intent avrcp = new Intent("com.android.music.metachanged");
+            avrcp.putExtra("track", CurrentSong);
+            avrcp.putExtra("artist", CurrentArtist);
+            avrcp.putExtra("album", CurrentAlbum);
+            sendBroadcast(avrcp);
+            TextView currentlyplayingtext;
+            currentlyplayingtext.setText(CurrentSong + "\n" + CurrentArtist + "\n" + CurrentAlbum);
+            TextView currentlyshowingtext;
+            currentlyshowingtext = (TextView) RadioFragment.findViewById(R.id.currentlyplayingshowtextview);
+            currentlyshowingtext.setText(CurrentShow);
+
+            //Toast.makeText(RadioService.this, CurrentSong, Toast.LENGTH_SHORT).show();
         } else {
-            AsyncTask<String, Void, String> getting = new AsyncTask<String, Void, String>() {
-                @Override
-                protected String doInBackground(String... params) {
-                    try
-                    {
-                        HttpClient httpclient = new DefaultHttpClient();
-                        HttpGet httpget = new HttpGet("http://www.radioutd.com/tuner/reload.php");
-                        HttpResponse response = httpclient.execute(httpget);
-                        HttpEntity entity = response.getEntity();
-                        InputStream is = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                        StringBuilder sb = new StringBuilder();
-                        String line = null;
-                        while ((line = reader.readLine()) != null)
-                            sb.append(line + "\n");
-                        String bodyHtml = sb.toString();
-                        is.close();
-
-
-                        CurrentArtist = bodyHtml.substring(bodyHtml.indexOf("<artist>") + 8, bodyHtml.indexOf("</artist>"));
-                        CurrentAlbum = bodyHtml.substring(bodyHtml.indexOf("<song>") + 6, bodyHtml.indexOf("</song>"));
-                        CurrentSong = bodyHtml.substring(bodyHtml.indexOf("<album>") + 6, bodyHtml.indexOf("</album>"));
-                        CurrentShow = "???";
-                        CurrentShowTime = "???";
-
-                        Toast.makeText(RadioService.this, CurrentSong, Toast.LENGTH_LONG).show();
-
-                    } catch (MalformedURLException e) {
-                        Toast.makeText(RadioService.this, "Dumb thing number 1", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        Toast.makeText(RadioService.this, "Dumb thing number 2", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-
-
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(String url) {
-                    Intent avrcp = new Intent("com.android.music.metachanged");
-                    avrcp.putExtra("track", CurrentSong);
-                    avrcp.putExtra("artist", CurrentArtist);
-                    avrcp.putExtra("album", CurrentAlbum);
-                }
-            }.execute();
+            MetaGrab task = new MetaGrab();
+            task.execute("A");
         }
     }
 
@@ -234,6 +269,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         RadioActivity.log("RadioService.Pause");
         if(mediaPlayer != null)
             mediaPlayer.pause();
+        updateCurrentlyPlaying(false);
     }
 
     public void stop()
@@ -254,6 +290,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             wifiLock.release();
         wifiLock = null;
 
+        updateCurrentlyPlaying(false);
         stopSelf();
     }
 

@@ -8,12 +8,68 @@
     android:paddingBottom="@dimen/activity_vertical_margin" >
 
 
-    <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:id="@+id/playPauseButton"
-        android:scaleType="centerCrop"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_action_play" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:weightSum="1"
+        android:id="@+id/linearlayoutoverall">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.52">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center_horizontal|top" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/drawer_title_listen"
+            android:layout_toEndOf="@+id/playPauseButton"
+            android:layout_below="@+id/playPauseButton"
+            android:layout_alignLeft="@+id/playPauseButton"
+            android:layout_alignStart="@+id/playPauseButton"
+            android:layout_alignRight="@+id/playPauseButton"
+            android:layout_alignEnd="@+id/playPauseButton"
+            android:id="@+id/currentlyplayingshowtextview"
+            android:layout_weight="0.22"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.26">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="93dp"
+                android:text="@string/drawer_title_listen"
+                android:layout_toEndOf="@+id/textView2"
+                android:id="@+id/currentlyplayingsongtextivew"
+                android:layout_toRightOf="@+id/textView2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_weight="0.31"
+                android:layout_gravity="center_vertical"
+                android:gravity="center" />
+
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/playPauseButton"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_action_play"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
