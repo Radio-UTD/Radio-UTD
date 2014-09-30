@@ -16,7 +16,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -25,7 +24,16 @@
             android:name=".RadioService"
             android:enabled="true"
             android:exported="false" >
+            <intent-filter>
+                <action android:name="com.utd.radio.INIT" />
+                <action android:name="com.utd.radio.PLAY" />
+                <action android:name="com.utd.radio.PAUSE" />
+                <action android:name="com.utd.radio.STOP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </service>
+
     </application>
 
 </manifest>

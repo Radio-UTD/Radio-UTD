@@ -26,10 +26,10 @@ import java.util.List;
 public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     public static final String urlStr = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
-    public static final String ACTION_INIT = "ACTION_INIT";
-    public static final String ACTION_PLAY = "ACTION_PLAY";
-    public static final String ACTION_PAUSE = "ACTION_PAUSE";
-    public static final String ACTION_STOP = "ACTION_STOP";
+    public static final String ACTION_INIT = "com.utd.radio.INIT";
+    public static final String ACTION_PLAY = "com.utd.radio.PLAY";
+    public static final String ACTION_PAUSE = "com.utd.radio.PAUSE";
+    public static final String ACTION_STOP = "com.utd.radio.STOP";
     // THE LAW OF FIVES
     public static final int NOTIFICATION_ID = 5;
 
@@ -44,6 +44,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     // TODO: wake lock
 
     private RadioBinder binder = new RadioBinder();
+    private boolean isBound = false;
 
     public RadioService() {
     }
@@ -70,7 +71,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             initMediaPlayer(false);
         }
 
-        return Service.START_REDELIVER_INTENT;
+        return Service.START_STICKY;
     }
 
     public void initMediaPlayer(final boolean autoPlay)
@@ -190,6 +191,9 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
             am.abandonAudioFocus(audioFocusListener);
         }
+
+        hideNotification();
+
         mediaPlayer = null;
 
         if(wifiLock != null)
@@ -209,7 +213,25 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public IBinder onBind(Intent intent) {
         RadioActivity.log("RadioService.onBind");
+        isBound = true;
+        updateNotification();
         return binder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        RadioActivity.log("RadioService.onUnbind");
+        isBound = false;
+        if(isPlaying())
+            updateNotification();
+        return true;
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        RadioActivity.log("RadioService.onRebind");
+        isBound = true;
+        updateNotification();
     }
 
     @Override
@@ -292,28 +314,50 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     private void updateNotification()
     {
-        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
-        contentView.setTextViewText(R.id.notification_title, "Sandstorm");
-        contentView.setTextViewText(R.id.notification_subtitle, "Darude feat. Snoop Dogg and his Weed Crew");
-        if(isPlaying())
-            contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_pause_light);
+        if(isBound)
+        {
+            hideNotification();
+        }
         else
-            contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_play_light);
+        {
+            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
+            contentView.setTextViewText(R.id.notification_title, "Sandstorm");
+            contentView.setTextViewText(R.id.notification_subtitle, "Darude feat. Snoop Dogg and his Weed Crew");
+            Intent playPauseIntent;
+            Intent stopIntent = new Intent(ACTION_STOP);
+            if(isPlaying()) {
+                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_pause_light);
+                playPauseIntent = new Intent(ACTION_PAUSE);
+            }
+            else {
+                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_play_light);
+                playPauseIntent = new Intent(ACTION_PLAY);
+            }
 
-        PendingIntent intent = PendingIntent.getActivity(this, 0, new Intent(this, RadioActivity.class), 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, RadioActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent playPausePendingIntent = PendingIntent.getService(this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            contentView.setOnClickPendingIntent(R.id.notification_play_pause_button, playPausePendingIntent);
+            contentView.setOnClickPendingIntent(R.id.notification_close_button, stopPendingIntent);
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContent(contentView)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(false)
+                    .setOngoing(true)
+                    .build();
+
+            notificationManager.notify(NOTIFICATION_ID, notification);
+        }
+    }
+
+    private void hideNotification()
+    {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentText("Darude")
-                .setContentTitle("Sandstorm")
-                .setContent(contentView)
-                .setContentIntent(intent)
-                .setAutoCancel(false)
-                .setOngoing(true)
-            .build();
-
-        notificationManager.notify(NOTIFICATION_ID, notification);
+        notificationManager.cancel(NOTIFICATION_ID);
     }
 }

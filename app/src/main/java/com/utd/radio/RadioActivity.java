@@ -63,7 +63,4 @@ public class RadioActivity extends ActionBarActivity
         }
 
     }
-
-
-
 }
