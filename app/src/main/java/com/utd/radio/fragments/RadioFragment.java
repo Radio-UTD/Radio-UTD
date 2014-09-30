@@ -78,8 +78,6 @@ public class RadioFragment extends Fragment {
                              Bundle savedInstanceState) {
         isBound = false;
         RadioActivity.log("RadioFragment.onCreateView");
-        Intent intent = new Intent(getActivity(), RadioService.class);
-        intent.setAction(RadioService.ACTION_INIT);getActivity().startService(intent);
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
 
 
@@ -113,7 +111,11 @@ public class RadioFragment extends Fragment {
         super.onResume();
         RadioActivity.log("RadioFragment.onResume");
         Intent intent = new Intent(getActivity(), RadioService.class);
-        getActivity().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
+        intent.setAction(RadioService.ACTION_INIT);
+        getActivity().startService(intent);
+
+        intent = new Intent(getActivity(), RadioService.class);
+        getActivity().getApplicationContext().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -122,7 +124,7 @@ public class RadioFragment extends Fragment {
         RadioActivity.log("RadioFragment.onPause");
         if(isBound)
         {
-            getActivity().unbindService(serviceConnection);
+            getActivity().getApplicationContext().unbindService(serviceConnection);
             isBound = false;
         }
     }
