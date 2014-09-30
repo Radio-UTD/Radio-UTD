@@ -47,9 +47,6 @@ public class RadioFragment extends Fragment {
                 @Override
                 public void onReady() {
                     playPauseButton.setEnabled(true);
-                    //Click it as to auto-play the music
-                    //We can remove this for later or put it into a setting
-                    playPauseButton.performClick();
                 }
             });
 
