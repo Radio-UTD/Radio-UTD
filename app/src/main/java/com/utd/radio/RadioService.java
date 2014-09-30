@@ -332,8 +332,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         else
         {
             RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
-            contentView.setTextViewText(R.id.notification_title, "Sandstorm");
-            contentView.setTextViewText(R.id.notification_subtitle, "Darude feat. Snoop Dogg and his Weed Crew");
+            contentView.setTextViewText(R.id.notification_title, currentMetadata.song);
+            contentView.setTextViewText(R.id.notification_subtitle, currentMetadata.artist);
             Intent playPauseIntent;
             Intent stopIntent = new Intent(ACTION_STOP);
             if(isPlaying()) {
@@ -373,6 +373,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     @Override
     public void onMetadataChanged(Metadata metadata) {
+        RadioActivity.log("RadioService.onMetadataChanged");
         currentMetadata = metadata;
         Intent avrcp = new Intent("com.android.music.metachanged");
             avrcp.putExtra("track", metadata.song);
