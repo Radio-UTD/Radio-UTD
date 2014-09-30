@@ -1,5 +1,8 @@
 package com.utd.radio;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -9,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.utd.radio.util.NaivePlsParser;
@@ -25,6 +30,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     public static final String ACTION_PLAY = "ACTION_PLAY";
     public static final String ACTION_PAUSE = "ACTION_PAUSE";
     public static final String ACTION_STOP = "ACTION_STOP";
+    // THE LAW OF FIVES
+    public static final int NOTIFICATION_ID = 5;
 
     private boolean playerReady;
     private MediaPlayer mediaPlayer;
@@ -156,6 +163,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             avrcp.putExtra("artist", "Darude");
             avrcp.putExtra("album", "Runescape Classics Vol 2");
             sendBroadcast(avrcp);
+            updateNotification();
         }
     }
 
@@ -163,7 +171,11 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     {
         RadioActivity.log("RadioService.Pause");
         if(mediaPlayer != null)
+        {
             mediaPlayer.pause();
+            updateNotification();
+        }
+
     }
 
     public void stop()
@@ -277,4 +289,31 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             }
         }
     };
+
+    private void updateNotification()
+    {
+        RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
+        contentView.setTextViewText(R.id.notification_title, "Sandstorm");
+        contentView.setTextViewText(R.id.notification_subtitle, "Darude feat. Snoop Dogg and his Weed Crew");
+        if(isPlaying())
+            contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_pause_light);
+        else
+            contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_play_light);
+
+        PendingIntent intent = PendingIntent.getActivity(this, 0, new Intent(this, RadioActivity.class), 0);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentText("Darude")
+                .setContentTitle("Sandstorm")
+                .setContent(contentView)
+                .setContentIntent(intent)
+                .setAutoCancel(false)
+                .setOngoing(true)
+            .build();
+
+        notificationManager.notify(NOTIFICATION_ID, notification);
+    }
 }
