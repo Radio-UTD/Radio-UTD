@@ -6,6 +6,8 @@
     <color name="main_bg">#EEE</color>
     <color name="nav_list_item_bg">#FFF</color>
     <color name="nav_list_bg">#FFF</color>
+
+    <color name="player_main_color">#DDFFFFFF</color>
     <!--<color name="nav_list_item_bg_pressed">#DDD</color>-->
     <color name="nav_list_item_bg_selected">#EEE</color>
 
@@ -14,6 +16,9 @@
     <color name="tertiary_text_color">#B5B5B5</color>
 
     <color name="action_bar_color">#E98300</color>
+
+    <color name="bar_shadow_begin">#44000000</color>
+    <color name="bar_shadow_end">#00000000</color>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

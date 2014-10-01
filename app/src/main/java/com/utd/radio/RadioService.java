@@ -233,8 +233,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     public boolean onUnbind(Intent intent) {
         RadioActivity.log("RadioService.onUnbind");
         isBound = false;
-        if(isPlaying())
-            updateNotification();
+        updateNotification();
         return true;
     }
 

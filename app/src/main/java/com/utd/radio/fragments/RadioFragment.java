@@ -12,26 +12,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.utd.radio.R;
 import com.utd.radio.RadioActivity;
 import com.utd.radio.RadioService;
+import com.utd.radio.listeners.OnMetadataChangedListener;
+import com.utd.radio.models.Metadata;
+import com.utd.radio.util.MetadataManager;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RadioFragment extends Fragment {
+public class RadioFragment extends Fragment implements OnMetadataChangedListener {
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
 
+    TextView artistTextView;
+    TextView songTextView;
     ImageButton playPauseButton;
+
 
     RadioService radioService;
     boolean isBound;
+
+    Metadata currentMetadata = new Metadata();
 
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -78,6 +86,9 @@ public class RadioFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
 
 
+        songTextView = (TextView) view.findViewById(R.id.player_song);
+        artistTextView = (TextView) view.findViewById(R.id.player_artist);
+
         playPauseButton = ((ImageButton)view.findViewById(R.id.playPauseButton));
         playPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +110,7 @@ public class RadioFragment extends Fragment {
             }
         });
 
+
         return view;
     }
 
@@ -107,18 +119,22 @@ public class RadioFragment extends Fragment {
     public void onResume() {
         super.onResume();
         RadioActivity.log("RadioFragment.onResume");
+
         Intent intent = new Intent(getActivity(), RadioService.class);
         intent.setAction(RadioService.ACTION_INIT);
         getActivity().startService(intent);
 
         intent = new Intent(getActivity(), RadioService.class);
         getActivity().getApplicationContext().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
+
+        MetadataManager.addListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         RadioActivity.log("RadioFragment.onPause");
+        MetadataManager.removeListener(this);
         if(isBound)
         {
             getActivity().getApplicationContext().unbindService(serviceConnection);
@@ -133,5 +149,12 @@ public class RadioFragment extends Fragment {
 //        ((RadioActivity) activity).onSectionAttached(
 //                getArguments().getInt(ARG_SECTION_NUMBER));
         ((RadioActivity) activity).restoreActionBar(getString(R.string.app_name));
+    }
+
+    @Override
+    public void onMetadataChanged(Metadata metadata) {
+        currentMetadata = metadata;
+        songTextView.setText(metadata.song);
+        artistTextView.setText(metadata.artist);
     }
 }
