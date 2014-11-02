@@ -50,7 +50,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     private RadioBinder binder = new RadioBinder();
     private boolean isBound = false;
 
-    private Metadata currentMetadata;
+    private Metadata currentMetadata = new Metadata();
 
     public RadioService() {
     }

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +51,19 @@ public class MetadataManager
 
                 String text = builder.toString();
                 Metadata metadata = new Metadata();
-                metadata.artist = text.substring(text.indexOf("<artist>") + 8, text.indexOf("</artist>"));
-                metadata.album = text.substring(text.indexOf("<album>") + 7, text.indexOf("</album>"));
-                metadata.song = text.substring(text.indexOf("<song>") + 6, text.indexOf("</song>"));
+                // TODO: Have a better check to see if we actually got a song back
+                // ideally we'd have an api to check
+                if(text.indexOf("<artist>") == -1)
+                {
+                    metadata.song = "Offair";
+                    metadata.artist = "Offair Playlist";
+                }
+                else
+                {
+                    metadata.song = text.substring(text.indexOf("<song>") + 6, text.indexOf("</song>"));
+                    metadata.artist = text.substring(text.indexOf("<artist>") + 8, text.indexOf("</artist>"));
+                    metadata.album = text.substring(text.indexOf("<album>") + 7, text.indexOf("</album>"));
+                }
                 return metadata;
             } catch (IOException e) {
                 RadioActivity.log("Failed to get metadata");

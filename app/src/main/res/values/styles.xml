@@ -3,7 +3,7 @@
     <color name="card_shadow">#14000000</color>
     <color name="card_color">#FFF</color>
 
-    <color name="main_bg">#EEE</color>
+    <color name="windowBackground">#EEE</color>
     <color name="nav_list_item_bg">#FFF</color>
     <color name="nav_list_bg">#FFF</color>
 
@@ -14,22 +14,33 @@
     <color name="primary_text_color">#555</color>
     <color name="secondary_text_color">#999</color>
     <color name="tertiary_text_color">#B5B5B5</color>
+    <color name="primary_text_color_inverse">#deffffff</color>
+    <color name="secondary_text_color_inverse">#8affffff</color>
 
-    <color name="action_bar_color">#E98300</color>
+
+    <color name="colorPrimary">#E98300</color>
+    <color name="colorPrimaryDark">#E84A0C</color>
+    <color name="colorAccent">#259b24</color>
+
+    <color name="transparentActionBar">#DDE98300</color>
 
     <color name="bar_shadow_begin">#44000000</color>
-    <color name="bar_shadow_end">#00000000</color>
+
+    <color name="scrim_begin">#BB000000</color>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/main_bg</item>
-        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/action_bar_color</item>
-        <item name="background">@color/action_bar_color</item>
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="AppTheme.NavDrawer">

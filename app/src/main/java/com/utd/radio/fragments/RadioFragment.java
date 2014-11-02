@@ -49,7 +49,7 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
             RadioActivity.log("RadioFragment.onServiceConnected");
             //Toast.makeText(RadioFragment.this.getActivity(), "Sucessfully binded to services!", Toast.LENGTH_SHORT).show();
             radioService = ((RadioService.RadioBinder) service).getService();
-            playPauseButton.setImageDrawable(getResources().getDrawable(radioService.isPlaying() ? R.drawable.ic_action_pause : R.drawable.ic_action_play));
+            playPauseButton.setImageDrawable(getResources().getDrawable(radioService.isPlaying() ? R.drawable.ic_action_pause_light : R.drawable.ic_action_play_light));
             playPauseButton.setEnabled(false);
             radioService.setOnReadyListener(new RadioService.OnReadyListener() {
                 @Override
@@ -99,12 +99,12 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
                     if(radioService.isPlaying())
                     {
                         radioService.pause();
-                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
+                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play_light));
                     }
                     else
                     {
                         radioService.play();
-                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
+                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause_light));
                     }
                 }
             }

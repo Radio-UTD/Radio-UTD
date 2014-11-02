@@ -1,144 +1,104 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/player_bottom_bar"
+        android:layout_height="76dp"
+        android:layout_width="match_parent"
+        android:background="@color/player_main_color"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="8dp"
+        android:paddingLeft="16dp"
 
+        android:orientation="vertical" >
+        <TextView android:id="@+id/player_song"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            tools:text="Sandstorm"
+            android:textColor="@color/primary_text_color"
+            android:fontFamily="sans-serif-light"
+            android:textSize="24sp"
+            />
+        <TextView android:id="@+id/player_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            tools:text="Darude ft. Snoop Doog Weed Master"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-light"
+            />
+    </LinearLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/largeAlbumArt"
         android:src="@drawable/temp_album_art"
         android:scaleType="centerCrop"
+        android:layout_above="@id/player_bottom_bar"
         />
-
-    <LinearLayout
-        android:id="@+id/player_bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@color/player_main_color"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        >
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="8dp"
-            android:id="@+id/smallAlbumArt"
-            android:src="@drawable/temp_album_art" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="8dp"
-            android:paddingRight="8dp" >
-            <TextView android:id="@+id/player_song"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"
-                tools:text="Sandstorm"
-                android:textColor="@color/primary_text_color"
-                android:fontFamily="sans-serif-light"
-                android:textSize="17sp"
-                />
-            <TextView android:id="@+id/player_artist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"
-                tools:text="Darude ft. Snoop Doog Weed Master"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-light"
-                />
-        </LinearLayout>
-        <ImageButton
-            android:id="@+id/playPauseButton"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_action_play"/>
-    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="128dp"
         android:layout_above="@id/player_bottom_bar"
-        android:background="@drawable/player_bar_shadow">
+        android:background="@drawable/scrim">
     </View>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_above="@id/player_bottom_bar"
+        android:paddingLeft="16dp"
+        android:paddingBottom="16dp"
+        >
+        <TextView android:id="@+id/show_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:text="Camping Out"
+            android:textColor="@color/primary_text_color_inverse"
+            android:textSize="34sp"
+            />
+        <TextView android:id="@+id/show_dj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:text="With Camps"
+            android:textColor="@color/secondary_text_color_inverse"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-light"
+            />
+    </LinearLayout>
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/playPauseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignTop="@id/player_bottom_bar"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="-36dp"
+        android:src="@drawable/ic_action_play_light"
+        fab:fab_colorNormal="@color/colorPrimary"
+        fab:fab_colorPressed="@color/colorPrimaryDark"
+      />
+
 </RelativeLayout>
-
-
-    <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:weightSum="1"-->
-        <!--android:id="@+id/linearlayoutoverall">-->
-
-        <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="0.52">-->
-
-
-        <!--</FrameLayout>-->
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:text="@string/drawer_title_listen"-->
-            <!--android:layout_toRightOf="@+id/playPauseButton"-->
-            <!--android:layout_toEndOf="@+id/playPauseButton"-->
-            <!--android:layout_below="@+id/playPauseButton"-->
-            <!--android:layout_alignLeft="@+id/playPauseButton"-->
-            <!--android:layout_alignStart="@+id/playPauseButton"-->
-            <!--android:layout_alignRight="@+id/playPauseButton"-->
-            <!--android:layout_alignEnd="@+id/playPauseButton"-->
-            <!--android:id="@+id/currentlyplayingshowtextview"-->
-            <!--android:layout_weight="0.22"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:gravity="center" />-->
-
-        <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="0.26">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="93dp"-->
-                <!--android:text="@string/drawer_title_listen"-->
-                <!--android:layout_toEndOf="@+id/textView2"-->
-                <!--android:id="@+id/currentlyplayingsongtextivew"-->
-                <!--android:layout_toRightOf="@+id/textView2"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_weight="0.31"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:gravity="center" />-->
-
-            <!--<ImageButton-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="100dp"-->
-                <!--android:id="@+id/playPauseButton"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--android:src="@drawable/ic_action_play"-->
-                <!--android:layout_gravity="center_vertical" />-->
-        <!--</LinearLayout>-->
-    <!--</LinearLayout>-->
-
