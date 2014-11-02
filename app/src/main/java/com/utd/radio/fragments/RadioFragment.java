@@ -128,6 +128,7 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         getActivity().getApplicationContext().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
 
         MetadataManager.addListener(this);
+        MetadataManager.requestMetadata();
     }
 
     @Override

@@ -17,6 +17,7 @@ import java.util.List;
 
 public class MetadataManager
 {
+    private  static final String METADATA_URL = "http://www.radioutd.com/tuner/reload.php";
     private static List<OnMetadataChangedListener> listeners = new ArrayList<OnMetadataChangedListener>();
 
     public static void addListener(OnMetadataChangedListener listener)
@@ -29,9 +30,9 @@ public class MetadataManager
         listeners.remove(listener);
     }
 
-    public static void requestMetadata(String urlStr)
+    public static void requestMetadata()
     {
-        new MetadataGetTask().execute(urlStr);
+        new MetadataGetTask().execute(METADATA_URL);
     }
 
     private static class MetadataGetTask extends AsyncTask<String, Void, Metadata>
@@ -53,7 +54,7 @@ public class MetadataManager
                 Metadata metadata = new Metadata();
                 // TODO: Have a better check to see if we actually got a song back
                 // ideally we'd have an api to check
-                if(text.indexOf("<artist>") == -1)
+                if(!text.contains("<artist>"))
                 {
                     metadata.song = "Offair";
                     metadata.artist = "Offair Playlist";

@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, OnMetadataChangedListener {
     private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
-    private  static final String METADATA_URL = "http://www.radioutd.com/tuner/reload.php";
 
     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
     public static final String ACTION_INIT = "com.utd.radio.INIT";
@@ -77,9 +76,10 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
         scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
-                MetadataManager.requestMetadata(METADATA_URL);
+                if(isPlaying())
+                    MetadataManager.requestMetadata();
             }
-        }, 0, 40, TimeUnit.SECONDS);
+        }, 0, 45, TimeUnit.SECONDS);
 
         return Service.START_STICKY;
     }
@@ -102,8 +102,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                     List<String> URLs = parser.getURLs();
                     if(URLs.isEmpty())
                         return null;
-                    String url = URLs.get(0);
-                    return url;
+                    return URLs.get(0);
                 } catch (MalformedURLException e) {
                     Toast.makeText(RadioService.this, "Something dumb happened", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -147,7 +146,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                     e.printStackTrace();
                 }
             }
-        }.execute();
+        };
+        task.execute();
     }
 
     @Override
@@ -169,7 +169,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
             am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
-            MetadataManager.requestMetadata(METADATA_URL);
+            MetadataManager.requestMetadata();
             updateNotification();
         }
     }
@@ -182,7 +182,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         if(mediaPlayer != null)
         {
             mediaPlayer.pause();
-            MetadataManager.requestMetadata(METADATA_URL);
+//            MetadataManager.requestMetadata();
             updateNotification();
         }
 
@@ -209,7 +209,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             wifiLock.release();
         wifiLock = null;
 
-        MetadataManager.requestMetadata(METADATA_URL);
+//        MetadataManager.requestMetadata();
         stopSelf();
     }
 
