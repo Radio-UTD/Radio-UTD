@@ -51,6 +51,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     private Metadata currentMetadata = new Metadata();
 
+    private ScheduledExecutorService scheduleTaskExecutor;
+
     public RadioService() {
     }
 
@@ -73,13 +75,16 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             initMediaPlayer(true);
         }
 
-        ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
-        scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                if(isPlaying())
-                    MetadataManager.requestMetadata();
-            }
-        }, 0, 45, TimeUnit.SECONDS);
+        if(scheduleTaskExecutor == null)
+        {
+            scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
+            scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
+                public void run() {
+                    if(isPlaying())
+                        MetadataManager.requestMetadata();
+                }
+            }, 0, 45, TimeUnit.SECONDS);
+        }
 
         return Service.START_STICKY;
     }
@@ -160,17 +165,23 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     public void play()
     {
         RadioActivity.log("RadioService.Play");
-        if(mediaPlayer == null)
-            initMediaPlayer(true);
-        else
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int result = am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
         {
-            mediaPlayer.start();
-
-            AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
-            am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-
-            MetadataManager.requestMetadata();
-            updateNotification();
+            RadioActivity.log("RadioService.Play Audio Focus Request Granted");
+            if(mediaPlayer == null)
+                initMediaPlayer(true);
+            else
+            {
+                mediaPlayer.start();
+                MetadataManager.requestMetadata();
+                updateNotification();
+            }
+        }
+        else if(result == AudioManager.AUDIOFOCUS_REQUEST_FAILED)
+        {
+            RadioActivity.log("RadioService.Play Audio Focus Request Failed");
         }
     }
 
@@ -272,53 +283,70 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     public class RadioBinder extends Binder {
-
-
         public RadioService getService() {
             return RadioService.this;
         }
-
     }
 
     public interface OnReadyListener {
-
         public void onReady();
     }
+
     AudioManager.OnAudioFocusChangeListener audioFocusListener =  new AudioManager.OnAudioFocusChangeListener() {
-        int duckingVolume = -1;
+
         AudioManager audio;
+        int lastKnownAudioFocusState;
+        int duckingVolume = -1;
+        boolean wasPlayingWhenTransientLoss = false;
+
         @Override
         public void onAudioFocusChange(int focusChange) {
-            switch(focusChange)
-            {
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    audio = (AudioManager) getSystemService(AUDIO_SERVICE);
-                    duckingVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
-                    int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-                    audio.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(maxVolume*.3f), 0);
-                    break;
+            RadioActivity.log("RadioService.onAudioFocusChange " +focusChange);
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_GAIN:
 
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    duckingVolume = -1;
-                    pause();
-                    break;
+                    switch(lastKnownAudioFocusState) {
+                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                            if(wasPlayingWhenTransientLoss) {
+                                play();
+                            }
+                            break;
+                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                            restoreVolume();
+                            break;
+                        default:
+                            if(!isPlaying()) {
+                                play();
+                            }
+                            break;
+                    }
 
+                    break;
                 case AudioManager.AUDIOFOCUS_LOSS:
-                    duckingVolume = -1;
                     stop();
                     break;
-
-                case AudioManager.AUDIOFOCUS_GAIN:
-                    duckingVolume = -1;
-                    play();
-                    if(duckingVolume != -1)
-                    {
-                        audio = (AudioManager) getSystemService(AUDIO_SERVICE);
-                        audio.setStreamVolume(AudioManager.STREAM_MUSIC, duckingVolume, 0);
-                    }
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    wasPlayingWhenTransientLoss = isPlaying();
+                    pause();
                     break;
-
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    duckVolume();
+                    break;
             }
+            lastKnownAudioFocusState = focusChange;
+        }
+
+        private void duckVolume()
+        {
+            audio = (AudioManager) getSystemService(AUDIO_SERVICE);
+            duckingVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+            audio.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(duckingVolume*.3f), 0);
+        }
+
+        private void restoreVolume()
+        {
+            audio = (AudioManager) getSystemService(AUDIO_SERVICE);
+            audio.setStreamVolume(AudioManager.STREAM_MUSIC, duckingVolume, 0);
         }
     };
 
