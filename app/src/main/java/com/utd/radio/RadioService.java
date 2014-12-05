@@ -367,11 +367,11 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             Intent playPauseIntent;
             Intent stopIntent = new Intent(ACTION_STOP);
             if(isPlaying()) {
-                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_pause_light);
+                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_pause_light);
                 playPauseIntent = new Intent(ACTION_PAUSE);
             }
             else {
-                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_action_play_light);
+                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_play_arrow_light);
                 playPauseIntent = new Intent(ACTION_PLAY);
             }
 
