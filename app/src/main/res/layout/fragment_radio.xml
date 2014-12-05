@@ -86,33 +86,36 @@
             />
     </LinearLayout>
 
-    <com.melnykov.fab.FloatingActionButton
-        xmlns:fab="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/playPauseButton"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_alignTop="@id/player_bottom_bar"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:layout_marginTop="-28dp"
-        android:src="@drawable/ic_action_play_light"
-        fab:fab_colorNormal="@color/colorPrimary"
-        fab:fab_colorPressed="@color/colorPrimaryDark"
-      />
+        >
+        <com.melnykov.fab.FloatingActionButton
+            xmlns:fab="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/playPauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_action_play_light"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            />
+        <com.github.rahatarmanahmed.cpv.CircularProgressView
+            xmlns:cpv="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/loading_anim"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            cpv:cpv_color="#FFF"
+            cpv:cpv_indeterminate="true"
+            cpv:cpv_thickness="3dp"
+            />
+    </FrameLayout>
 
-    <com.github.rahatarmanahmed.cpv.CircularProgressView
-        xmlns:cpv="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/loading_anim"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignTop="@id/playPauseButton"
-        android:layout_alignLeft="@id/playPauseButton"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        cpv:cpv_color="#FFF"
-        cpv:cpv_indeterminate="true"
-        cpv:cpv_thickness="3dp"
-        />
+
 
 </RelativeLayout>
