@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
@@ -369,11 +370,13 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             Intent playPauseIntent;
             Intent stopIntent = new Intent(ACTION_STOP);
             if(isPlaying()) {
-                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_pause_light);
+                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_pause : R.drawable.ic_pause_light;
+                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
                 playPauseIntent = new Intent(ACTION_PAUSE);
             }
             else {
-                contentView.setImageViewResource(R.id.notification_play_pause_button, R.drawable.ic_play_arrow_light);
+                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_play_arrow : R.drawable.ic_play_arrow_light;
+                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
                 playPauseIntent = new Intent(ACTION_PLAY);
             }
 
