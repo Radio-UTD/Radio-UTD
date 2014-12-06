@@ -98,4 +98,7 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
+    <style name="NotificationTextPrimary" parent="android:TextAppearance.StatusBar.EventContent.Title"></style>
+    <style name="NotificationTextSecondary" parent="android:TextAppearance.StatusBar.EventContent"></style>
+
 </resources>

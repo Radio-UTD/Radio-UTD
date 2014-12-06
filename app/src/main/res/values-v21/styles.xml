@@ -1,0 +1,4 @@
+<resources>
+    <style name="NotificationTextPrimary" parent="android:TextAppearance.Material.Notification.Title"></style>
+    <style name="NotificationTextSecondary" parent="android:TextAppearance.Material.Notification"></style>
+</resources>
