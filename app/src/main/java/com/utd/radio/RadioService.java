@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, OnMetadataChangedListener {
     private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
-
     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
     public static final String ACTION_INIT = "com.utd.radio.INIT";
     public static final String ACTION_PLAY = "com.utd.radio.PLAY";
@@ -40,9 +39,15 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     public static final int NOTIFICATION_ID = 5;
 
-    private boolean playerReady;
+    public enum RadioState {
+        CONNECTING,
+        BUFFERING,
+        PLAYING,
+        PAUSED
+    }
+
     private MediaPlayer mediaPlayer;
-    private OnReadyListener onReadyListener;
+    private OnStateChangeListener onStateChangeListener;
 
     private WifiManager.WifiLock wifiLock;
 
@@ -52,6 +57,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     private Metadata currentMetadata = new Metadata();
 
     private ScheduledExecutorService scheduleTaskExecutor;
+
+    private RadioState currentState;
 
     public RadioService() {
     }
@@ -96,6 +103,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         if(mediaPlayer != null)
             return;
 
+        setState(RadioState.CONNECTING);
+
         RadioActivity.log("RadioService.initMediaPlayer");
         AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
             @Override
@@ -136,15 +145,14 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                     mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
-                            playerReady = true;
-                            onReadyListener.onReady();
+                            setState(RadioState.PAUSED);
                             if(autoPlay)
                                 play();
                         }
                     });
                     mediaPlayer.setOnCompletionListener(RadioService.this);
                     mediaPlayer.setOnErrorListener(RadioService.this);
-
+                    setState(RadioState.BUFFERING);
                     mediaPlayer.prepareAsync();
                 } catch (IOException e) {
                     Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
@@ -175,6 +183,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             else
             {
                 mediaPlayer.start();
+                setState(RadioState.PLAYING);
                 MetadataManager.requestMetadata();
                 updateNotification();
             }
@@ -193,6 +202,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         if(mediaPlayer != null)
         {
             mediaPlayer.pause();
+            setState(RadioState.PAUSED);
 //            MetadataManager.requestMetadata();
             updateNotification();
         }
@@ -206,7 +216,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         {
             mediaPlayer.stop();
             mediaPlayer.release();
-            playerReady = false;
 
             AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
             am.abandonAudioFocus(audioFocusListener);
@@ -228,7 +237,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     public void onCreate() {
         super.onCreate();
         RadioActivity.log("RadioService.onCreate");
-        playerReady = false;
         MetadataManager.addListener(this);
     }
 
@@ -275,14 +283,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         return false;
     }
 
-    public boolean isReady() {
-        return playerReady;
-    }
-
-    public void setOnReadyListener(OnReadyListener listener){
-        onReadyListener = listener;
-        if(playerReady)
-            onReadyListener.onReady();
+    public void setOnStateChangeListener(OnStateChangeListener listener){
+        onStateChangeListener = listener;
     }
 
     public class RadioBinder extends Binder {
@@ -291,8 +293,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         }
     }
 
-    public interface OnReadyListener {
-        public void onReady();
+    public interface OnStateChangeListener {
+        public void onStateChange(RadioState state);
     }
 
     AudioManager.OnAudioFocusChangeListener audioFocusListener =  new AudioManager.OnAudioFocusChangeListener() {
@@ -411,5 +413,18 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             avrcp.putExtra("album", metadata.album);
         sendBroadcast(avrcp);
         updateNotification();
+    }
+
+    public RadioState getState()
+    {
+        return currentState;
+    }
+
+
+    private void setState(RadioState state)
+    {
+        currentState = state;
+        if(onStateChangeListener != null)
+            onStateChangeListener.onStateChange(state);
     }
 }

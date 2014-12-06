@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clipChildren="false"
+    >
     <LinearLayout
         android:id="@+id/player_bottom_bar"
         android:layout_height="76dp"
@@ -93,6 +95,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:layout_marginTop="-28dp"
+        android:clipChildren="false"
         >
         <com.melnykov.fab.FloatingActionButton
             xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -110,6 +113,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
+            android:elevation="@dimen/fab_elevation_lollipop"
             cpv:cpv_color="#FFF"
             cpv:cpv_indeterminate="true"
             cpv:cpv_thickness="3dp"
