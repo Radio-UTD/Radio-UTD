@@ -4,8 +4,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.utd.radio.listeners.OnMetadataChangedListener;
 import com.utd.radio.models.Metadata;
+import com.utd.radio.receivers.ConnectionChangeReceiver;
 import com.utd.radio.util.MetadataManager;
 import com.utd.radio.util.NaivePlsParser;
 
@@ -433,11 +436,25 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     }
 
 
-    private void setState(RadioState state)
+    private void setState(RadioState newState)
     {
-        currentState = state;
-        if(onStateChangeListener != null)
-            onStateChangeListener.onStateChange(state);
+        RadioState oldState = currentState;
+        currentState = newState;
+        if(onStateChangeListener != null && oldState != newState)
+            onStateChangeListener.onStateChange(newState);
+
+        setConnectionChangeListener(newState == RadioState.DISCONNECTED);
+    }
+
+    private void setConnectionChangeListener(boolean enabled)
+    {
+        ComponentName receiver = new ComponentName(this, ConnectionChangeReceiver.class);
+
+        PackageManager pm = getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     private boolean isConnectionAvailable()
