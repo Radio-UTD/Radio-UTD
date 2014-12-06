@@ -394,13 +394,12 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                     .setOngoing(true)
                     .build();
 
-            notificationManager.notify(NOTIFICATION_ID, notification);
+            startForeground(NOTIFICATION_ID, notification);
         }
     }
 
     private void hideNotification() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(NOTIFICATION_ID);
+        stopForeground(true);
     }
 
     @Override

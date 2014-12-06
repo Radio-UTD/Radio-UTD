@@ -122,6 +122,7 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         if(isBound)
         {
             getActivity().getApplicationContext().unbindService(serviceConnection);
+            radioService.setOnStateChangeListener(null);
             isBound = false;
         }
     }
