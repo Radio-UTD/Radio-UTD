@@ -12,4 +12,10 @@
         <item name="android:textColor">@color/primary_text_color</item>
     </style>
 
+    <style name="TextPrimary">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
 </resources>

@@ -4,9 +4,12 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -41,6 +44,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     public static final int NOTIFICATION_ID = 5;
 
     public enum RadioState {
+        DISCONNECTED,
         CONNECTING,
         BUFFERING,
         PLAYING,
@@ -103,6 +107,12 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         // Already initialized
         if(mediaPlayer != null)
             return;
+
+        if(!isConnectionAvailable())
+        {
+            setState(RadioState.DISCONNECTED);
+            return;
+        }
 
         setState(RadioState.CONNECTING);
 
@@ -428,5 +438,13 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         currentState = state;
         if(onStateChangeListener != null)
             onStateChangeListener.onStateChange(state);
+    }
+
+    private boolean isConnectionAvailable()
+    {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }

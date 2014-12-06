@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
@@ -28,6 +29,9 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
     TextView songTextView;
     ImageButton playPauseButton;
     CircularProgressView loadingAnim;
+
+    RelativeLayout mainRadioLayout;
+    RelativeLayout disconnectedLayout;
 
     RadioService radioService;
     boolean isBound;
@@ -68,6 +72,8 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         RadioActivity.log("RadioFragment.onCreateView");
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
 
+        mainRadioLayout = (RelativeLayout) view.findViewById(R.id.main_radio_layout);
+        disconnectedLayout = (RelativeLayout) view.findViewById(R.id.disconnected_layout);
 
         songTextView = (TextView) view.findViewById(R.id.player_song);
         artistTextView = (TextView) view.findViewById(R.id.player_artist);
@@ -149,19 +155,30 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         {
             case CONNECTING:
             case BUFFERING:
+                mainRadioLayout.setVisibility(View.VISIBLE);
+                disconnectedLayout.setVisibility(View.INVISIBLE);
                 playPauseButton.setEnabled(false);
                 loadingAnim.setVisibility(View.VISIBLE);
                 playPauseButton.setImageDrawable(null);
                 break;
             case PAUSED:
+                mainRadioLayout.setVisibility(View.VISIBLE);
+                disconnectedLayout.setVisibility(View.INVISIBLE);
                 playPauseButton.setEnabled(true);
                 loadingAnim.setVisibility(View.INVISIBLE);
                 playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_light));
                 break;
             case PLAYING:
+                mainRadioLayout.setVisibility(View.VISIBLE);
+                disconnectedLayout.setVisibility(View.INVISIBLE);
                 playPauseButton.setEnabled(true);
                 loadingAnim.setVisibility(View.INVISIBLE);
                 playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_light));
+                break;
+            case DISCONNECTED:
+                mainRadioLayout.setVisibility(View.INVISIBLE);
+                disconnectedLayout.setVisibility(View.VISIBLE);
+                playPauseButton.setEnabled(false);
                 break;
         }
     }
