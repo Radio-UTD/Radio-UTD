@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.utd.radio.R;
 import com.utd.radio.RadioActivity;
 import com.utd.radio.RadioService;
@@ -21,20 +22,12 @@ import com.utd.radio.listeners.OnMetadataChangedListener;
 import com.utd.radio.models.Metadata;
 import com.utd.radio.util.MetadataManager;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class RadioFragment extends Fragment implements OnMetadataChangedListener {
-
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
+public class RadioFragment extends Fragment implements OnMetadataChangedListener, RadioService.OnStateChangeListener {
 
     TextView artistTextView;
     TextView songTextView;
     ImageButton playPauseButton;
-
+    CircularProgressView loadingAnim;
 
     RadioService radioService;
     boolean isBound;
@@ -47,19 +40,9 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
             isBound = true;
 
             RadioActivity.log("RadioFragment.onServiceConnected");
-            //Toast.makeText(RadioFragment.this.getActivity(), "Sucessfully binded to services!", Toast.LENGTH_SHORT).show();
             radioService = ((RadioService.RadioBinder) service).getService();
-            playPauseButton.setImageDrawable(getResources().getDrawable(radioService.isPlaying() ? R.drawable.ic_pause_light: R.drawable.ic_play_arrow_light));
-            playPauseButton.setEnabled(false);
-            radioService.setOnReadyListener(new RadioService.OnReadyListener() {
-                @Override
-                public void onReady() {
-                    playPauseButton.setEnabled(true);
-                }
-            });
-
-            if(!radioService.isReady())
-                radioService.initMediaPlayer(false);
+            radioService.setOnStateChangeListener(RadioFragment.this);
+            onStateChange(radioService.getState());
         }
 
         @Override
@@ -88,7 +71,7 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
 
         songTextView = (TextView) view.findViewById(R.id.player_song);
         artistTextView = (TextView) view.findViewById(R.id.player_artist);
-
+        loadingAnim = (CircularProgressView) view.findViewById((R.id.loading_anim));
         playPauseButton = ((ImageButton)view.findViewById(R.id.playPauseButton));
         playPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,5 +140,28 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         currentMetadata = metadata;
         songTextView.setText(metadata.song);
         artistTextView.setText(metadata.artist);
+    }
+
+    @Override
+    public void onStateChange(RadioService.RadioState state) {
+        switch(state)
+        {
+            case CONNECTING:
+            case BUFFERING:
+                playPauseButton.setEnabled(false);
+                loadingAnim.setVisibility(View.VISIBLE);
+                playPauseButton.setImageDrawable(null);
+                break;
+            case PAUSED:
+                playPauseButton.setEnabled(true);
+                loadingAnim.setVisibility(View.INVISIBLE);
+                playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_light));
+                break;
+            case PLAYING:
+                playPauseButton.setEnabled(true);
+                loadingAnim.setVisibility(View.INVISIBLE);
+                playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_light));
+                break;
+        }
     }
 }
