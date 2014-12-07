@@ -101,7 +101,7 @@
             android:layout_alignTop="@id/player_bottom_bar"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="-28dp"
+            style="@style/FABPaddingFix"
             android:clipChildren="false"
             >
             <com.melnykov.fab.FloatingActionButton
