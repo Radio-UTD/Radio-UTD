@@ -5,7 +5,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,18 +28,29 @@
             >
 
             <TextView
+                android:id="@+id/show_card_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:text="Camping Out with Camps"
-                style="@style/ThumbnailCard.Title"
-                android:id="@+id/show_card_title" />
+                style="@style/TextPrimary"
+                />
 
             <TextView
+                android:id="@+id/show_card_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/ThumbnailCard.Subtitle"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:singleLine="true"
                 android:text="12PM - 2PM"
-                android:id="@+id/show_card_subtitle" />
+                style="@style/TextTertiary"
+                />
 
         </LinearLayout>
 
