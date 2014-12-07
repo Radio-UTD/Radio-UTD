@@ -19,7 +19,7 @@
 
 
     <color name="colorPrimary">#E98300</color>
-    <color name="colorPrimaryDark">#E84A0C</color>
+    <color name="colorPrimaryDark">#D96C00</color>
     <color name="colorAccent">#259b24</color>
 
     <color name="transparentActionBar">#DDE98300</color>
