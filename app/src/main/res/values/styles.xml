@@ -1,32 +1,6 @@
 <resources>
 
-    <color name="card_shadow">#14000000</color>
-    <color name="card_color">#FFF</color>
 
-    <color name="windowBackground">#EEE</color>
-    <color name="nav_list_item_bg">#FFF</color>
-    <color name="nav_list_bg">#FFF</color>
-
-    <color name="player_main_color">#DDFFFFFF</color>
-    <!--<color name="nav_list_item_bg_pressed">#DDD</color>-->
-    <color name="nav_list_item_bg_selected">#EEE</color>
-
-    <color name="primary_text_color">#555</color>
-    <color name="secondary_text_color">#999</color>
-    <color name="tertiary_text_color">#B5B5B5</color>
-    <color name="primary_text_color_inverse">#deffffff</color>
-    <color name="secondary_text_color_inverse">#8affffff</color>
-
-
-    <color name="colorPrimary">#E98300</color>
-    <color name="colorPrimaryDark">#D96C00</color>
-    <color name="colorAccent">#259b24</color>
-
-    <color name="transparentActionBar">#DDE98300</color>
-
-    <color name="bar_shadow_begin">#44000000</color>
-
-    <color name="scrim_begin">#BB000000</color>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
