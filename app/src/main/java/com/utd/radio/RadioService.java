@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, OnMetadataChangedListener {
+public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, OnMetadataChangedListener {
     private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
     public static final String ACTION_INIT = "com.utd.radio.INIT";
@@ -171,6 +171,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                     });
                     mediaPlayer.setOnCompletionListener(RadioService.this);
                     mediaPlayer.setOnErrorListener(RadioService.this);
+                    mediaPlayer.setOnInfoListener(RadioService.this);
                     setState(RadioState.BUFFERING);
                     mediaPlayer.prepareAsync();
                 } catch (IOException e) {
@@ -288,6 +289,21 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public void onCompletion(MediaPlayer mp) {
 
+    }
+
+
+    @Override
+    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+        RadioActivity.log("RadioService.onInfo " + what);
+        if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
+        {
+            setState(RadioState.BUFFERING);
+        }
+        else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
+        {
+            setState(isPlaying() ? RadioState.PLAYING : RadioState.PAUSED);
+        }
+        return false;
     }
 
     @Override
