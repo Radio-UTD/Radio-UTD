@@ -144,6 +144,11 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             @Override
             protected void onPostExecute(String url) {
                 super.onPostExecute(url);
+                if(url == null)
+                {
+                    setState(RadioState.DISCONNECTED);
+                    return;
+                }
                 try
                 {
                     RadioActivity.log("RadioService.AsyncTask.PostExecute");
