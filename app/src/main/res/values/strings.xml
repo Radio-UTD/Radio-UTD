@@ -11,5 +11,7 @@
     <string name="action_settings">Settings</string>
     <string name="current_show">Loading...</string>
     <string name="current_playing">Loading...</string>
+    <string name="disconnect_msg_title">Aw geez!</string>
+    <string name="disconnect_msg_text">I can\'t find the internet</string>
 
 </resources>
