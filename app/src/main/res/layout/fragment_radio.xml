@@ -1,122 +1,111 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <!-- Main layout -->
     <RelativeLayout
         android:id="@+id/main_radio_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:clipChildren="false"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/player_bottom_bar"
-            android:layout_height="76dp"
+            style="@style/PlayerBar"
             android:layout_width="match_parent"
-            android:background="@color/player_main_color"
-            android:layout_weight="1"
+            android:layout_height="76dp"
             android:layout_alignParentBottom="true"
-            android:paddingTop="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingTop="8dp">
 
-            android:orientation="vertical" >
-            <TextView android:id="@+id/player_song"
+            <TextView
+                android:id="@+id/player_song"
+                style="@style/TextPrimary.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
                 android:paddingRight="80dp"
                 android:singleLine="true"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"
-                tools:text="Sandstorm"
-                android:textColor="@color/primary_text_color"
-                android:fontFamily="sans-serif-light"
-                android:textSize="24sp"
-                />
-            <TextView android:id="@+id/player_artist"
+                tools:text="Sandstorm" />
+
+            <TextView
+                android:id="@+id/player_artist"
+                style="@style/TextSecondary.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:singleLine="true"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                tools:text="Darude ft. Snoop Doog Weed Master"
-                android:textColor="@color/secondary_text_color"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-light"
-                />
+                android:singleLine="true"
+                tools:text="Darude ft. Skrillex" />
         </LinearLayout>
+
         <ImageView
+            android:id="@+id/largeAlbumArt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/largeAlbumArt"
-            android:src="@drawable/temp_album_art"
-            android:scaleType="centerCrop"
             android:layout_above="@id/player_bottom_bar"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/temp_album_art" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="128dp"
             android:layout_above="@id/player_bottom_bar"
-            android:background="@drawable/scrim">
-        </View>
+            android:background="@drawable/scrim"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_above="@id/player_bottom_bar"
-            android:paddingLeft="16dp"
+            android:orientation="vertical"
             android:paddingBottom="16dp"
-            >
-            <TextView android:id="@+id/show_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"
-                android:text="Camping Out"
-                android:textColor="@color/primary_text_color_inverse"
-                android:textSize="34sp"
-                />
-            <TextView android:id="@+id/show_dj"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            android:paddingLeft="16dp">
 
-                android:singleLine="true"
+            <TextView
+                android:id="@+id/show_name"
+                style="@style/PlayerShowTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:text="With Camps"
-                android:textColor="@color/secondary_text_color_inverse"
-                android:textSize="20sp"
-                android:fontFamily="sans-serif-light"
-                />
+                android:singleLine="true"
+                android:text="Camping Out" />
+
+            <TextView
+                android:id="@+id/show_dj"
+                style="@style/PlayerShowDJText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
+                android:text="With Camps" />
         </LinearLayout>
 
         <FrameLayout
+            style="@style/FABPaddingFix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/player_bottom_bar"
             android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/player_bottom_bar"
             android:layout_marginRight="16dp"
-            style="@style/FABPaddingFix"
-            android:clipChildren="false"
-            >
-            <com.melnykov.fab.FloatingActionButton
-                xmlns:fab="http://schemas.android.com/apk/res-auto"
+            android:clipChildren="false">
+
+            <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/playPauseButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_play_arrow_light"
                 fab:fab_colorNormal="@color/colorPrimary"
-                fab:fab_colorPressed="@color/colorPrimaryDark"
-                />
-            <com.github.rahatarmanahmed.cpv.CircularProgressView
-                xmlns:cpv="http://schemas.android.com/apk/res-auto"
+                fab:fab_colorPressed="@color/colorPrimaryDark" />
+
+            <com.github.rahatarmanahmed.cpv.CircularProgressView xmlns:cpv="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/loading_anim"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -124,8 +113,7 @@
                 android:elevation="@dimen/fab_elevation_lollipop"
                 cpv:cpv_color="#FFF"
                 cpv:cpv_indeterminate="true"
-                cpv:cpv_thickness="3dp"
-                />
+                cpv:cpv_thickness="3dp" />
         </FrameLayout>
 
     </RelativeLayout>
@@ -135,37 +123,35 @@
         android:id="@+id/disconnected_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
-        >
+        android:visibility="invisible">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_centerInParent="true"
-            >
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/emoticon_sad"
-                ></ImageView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                style="@style/TextPrimary.Large"
-                android:text="Aw geez!"
-            />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                style="@style/TextSecondary.Large"
-                android:text="I can't find the internet"
-                />
+                android:src="@drawable/emoticon_sad"></ImageView>
 
-            </LinearLayout>
+            <TextView
+                style="@style/TextPrimary.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/disconnect_msg_title" />
+
+            <TextView
+                style="@style/TextSecondary.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/disconnect_msg_text" />
+
+        </LinearLayout>
     </RelativeLayout>
 
 </FrameLayout>
