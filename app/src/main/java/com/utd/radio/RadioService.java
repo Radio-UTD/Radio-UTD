@@ -132,10 +132,8 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                         return null;
                     return URLs.get(0);
                 } catch (MalformedURLException e) {
-                    Toast.makeText(RadioService.this, "Something dumb happened", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 } catch (IOException e) {
-                    Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 return null;
