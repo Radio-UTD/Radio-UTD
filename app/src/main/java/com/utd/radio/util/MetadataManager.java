@@ -1,7 +1,11 @@
 package com.utd.radio.util;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.utd.radio.RadioActivity;
 import com.utd.radio.listeners.OnMetadataChangedListener;
 import com.utd.radio.models.Metadata;
@@ -33,69 +37,37 @@ public class MetadataManager
         listeners.remove(listener);
     }
 
-    public static void requestMetadata()
+    public static void requestMetadata(Context context)
     {
-        new MetadataGetTask().execute(METADATA_URL);
-    }
-
-    private static class MetadataGetTask extends AsyncTask<String, Void, Metadata>
-    {
-        protected Metadata doInBackground(String... params) {
-            HttpURLConnection conn = null;
-            try {
-                URL url = new URL(params[0]);
-                conn = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = conn.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder builder = new StringBuilder();
-                String line;
-                while((line = in.readLine()) != null) {
-                    builder.append(line);
-                }
-
-                JSONObject json = new JSONObject(builder.toString());
+        Ion.with(context).load(METADATA_URL).asJsonObject().setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject json) {
+                if(e != null)
+                    return;
                 Metadata metadata = new Metadata();
-                // TODO: Have a better check to see if we actually got a song back
-                // ideally we'd have an api to check
-                if(!json.getString("onAir").equals("1"))
+                if(json.get("onAir").getAsInt() != 1)
                 {
                     metadata.showName = "Offair";
                     metadata.song = "Offair Playlist";
                 }
                 else
                 {
-                    JSONObject nowPlaying = json.getJSONObject("nowPlaying");
-                    metadata.song = nowPlaying.getString("song");
-                    metadata.artist = nowPlaying.getString("artist");
-                    metadata.album = nowPlaying.getString("album");
+                    JsonObject nowPlaying = json.get("nowPlaying").getAsJsonObject();
+                    metadata.song = nowPlaying.get("song").getAsString();
+                    metadata.artist = nowPlaying.get("artist").getAsString();
+                    metadata.album = nowPlaying.get("album").getAsString();
 
-                    JSONObject show = json.getJSONObject("show");
-                    metadata.avatar = show.getString("avatar");
-                    String showStr = show.getString("showName");
+                    JsonObject show = json.get("show").getAsJsonObject();
+                    metadata.avatar = show.get("avatar").getAsString();
+                    String showStr = show.get("showName").getAsString();
                     int splitIndex = showStr.lastIndexOf("with");
                     metadata.showName = showStr.substring(0, splitIndex-1);
                     metadata.showDJ = showStr.substring(splitIndex);
 
                 }
-                return metadata;
-            } catch (IOException e) {
-                RadioActivity.log("Failed to get metadata");
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
-                if(conn != null)
-                    conn.disconnect();
+                for(OnMetadataChangedListener listener : listeners)
+                    listener.onMetadataChanged(metadata);
             }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Metadata metadata) {
-            if(metadata == null)
-                return;
-            for(OnMetadataChangedListener listener : listeners)
-                listener.onMetadataChanged(metadata);
-        }
+        });
     }
 }

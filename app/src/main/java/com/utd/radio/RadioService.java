@@ -14,7 +14,6 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -29,18 +28,14 @@ import com.utd.radio.listeners.OnMetadataChangedListener;
 import com.utd.radio.models.Metadata;
 import com.utd.radio.receivers.ConnectionChangeReceiver;
 import com.utd.radio.util.MetadataManager;
-import com.utd.radio.util.NaivePlsParser;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, OnMetadataChangedListener {
-    private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
+    private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/Live";
     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
     public static final String ACTION_INIT = "com.utd.radio.INIT";
     public static final String ACTION_PLAY = "com.utd.radio.PLAY";
@@ -99,7 +94,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
                 public void run() {
                     if(isPlaying())
-                        MetadataManager.requestMetadata();
+                        MetadataManager.requestMetadata(RadioService.this);
                 }
             }, 0, 45, TimeUnit.SECONDS);
         }
@@ -109,6 +104,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     public void initMediaPlayer(final boolean autoPlay)
     {
+        RadioActivity.log("RadioService.initMediaPlayer");
 
         // Already initialized
         if(mediaPlayer != null)
@@ -122,66 +118,35 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
         setState(RadioState.CONNECTING);
 
-        RadioActivity.log("RadioService.initMediaPlayer");
-        AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
-            @Override
-            protected String doInBackground(String... params) {
-                try
-                {
-                    RadioActivity.log("RadioService.AsyncTask");
-                    NaivePlsParser parser = new NaivePlsParser(new URL(STREAM_URL));
-                    List<String> URLs = parser.getURLs();
-                    if(URLs.isEmpty())
-                        return null;
-                    return URLs.get(0);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
+        try
+        {
+            RadioActivity.log("RadioService.AsyncTask.PostExecute");
+            WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
 
-            @Override
-            protected void onPostExecute(String url) {
-                super.onPostExecute(url);
-                if(url == null)
-                {
-                    setState(RadioState.DISCONNECTED);
-                    return;
-                }
-                try
-                {
-                    RadioActivity.log("RadioService.AsyncTask.PostExecute");
-                    WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+            wifiLock = wifiManager.createWifiLock(WIFILOCK_TAG);
+            wifiLock.acquire();
 
-                    wifiLock = wifiManager.createWifiLock(WIFILOCK_TAG);
-                    wifiLock.acquire();
-
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setWakeMode(RadioService.this, PowerManager.PARTIAL_WAKE_LOCK);
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mediaPlayer.setDataSource(url);
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            setState(RadioState.PAUSED);
-                            if(autoPlay)
-                                play();
-                        }
-                    });
-                    mediaPlayer.setOnCompletionListener(RadioService.this);
-                    mediaPlayer.setOnErrorListener(RadioService.this);
-                    mediaPlayer.setOnInfoListener(RadioService.this);
-                    setState(RadioState.BUFFERING);
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setWakeMode(RadioService.this, PowerManager.PARTIAL_WAKE_LOCK);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setDataSource(STREAM_URL);
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    setState(RadioState.PAUSED);
+                    if (autoPlay)
+                        play();
                 }
-            }
-        };
-        task.execute();
+            });
+            mediaPlayer.setOnCompletionListener(RadioService.this);
+            mediaPlayer.setOnErrorListener(RadioService.this);
+            mediaPlayer.setOnInfoListener(RadioService.this);
+            setState(RadioState.BUFFERING);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -205,7 +170,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             {
                 mediaPlayer.start();
                 setState(RadioState.PLAYING);
-                MetadataManager.requestMetadata();
+                MetadataManager.requestMetadata(this);
                 updateNotification();
             }
         }
@@ -224,7 +189,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         {
             mediaPlayer.pause();
             setState(RadioState.PAUSED);
-//            MetadataManager.requestMetadata();
             updateNotification();
         }
 
@@ -250,7 +214,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             wifiLock.release();
         wifiLock = null;
 
-//        MetadataManager.requestMetadata();
         stopSelf();
     }
 
@@ -310,6 +273,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         RadioActivity.log("RadioService.onError");
+        setState(RadioState.DISCONNECTED);
         return false;
     }
 
