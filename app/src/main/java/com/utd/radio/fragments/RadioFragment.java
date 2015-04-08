@@ -154,8 +154,6 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         artistTextView.setText(metadata.artist);
         showNameTextView.setText(metadata.showName);
         showDJTextView.setText(metadata.showDJ);
-        RadioActivity.log(currentMetadata.toString());
-        RadioActivity.log(metadata.toString());
         if(albumArtImageView != null && (!metadata.avatar.isEmpty() || !currentMetadata.avatar.equals(metadata.avatar)))
         {
             Ion.with(albumArtImageView)

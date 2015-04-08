@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -22,6 +23,8 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.utd.radio.listeners.OnMetadataChangedListener;
 import com.utd.radio.models.Metadata;
 import com.utd.radio.receivers.ConnectionChangeReceiver;
@@ -144,7 +147,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                 super.onPostExecute(url);
                 if(url == null)
                 {
-//                    setState(RadioState.DISCONNECTED);
+                    setState(RadioState.DISCONNECTED);
                     return;
                 }
                 try
@@ -396,40 +399,49 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         }
         else
         {
-            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
-            contentView.setTextViewText(R.id.notification_title, currentMetadata.song);
-            contentView.setTextViewText(R.id.notification_subtitle, currentMetadata.artist);
-            Intent playPauseIntent;
-            Intent stopIntent = new Intent(ACTION_STOP);
-            if(isPlaying()) {
-                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_pause : R.drawable.ic_pause_light;
-                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
-                playPauseIntent = new Intent(ACTION_PAUSE);
-            }
-            else {
-                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_play_arrow : R.drawable.ic_play_arrow_light;
-                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
-                playPauseIntent = new Intent(ACTION_PLAY);
-            }
+            Ion.with(this).load(currentMetadata.avatar).asBitmap().setCallback(new FutureCallback<Bitmap>() {
+                @Override
+                public void onCompleted(Exception e, Bitmap albumArt) {
+                    RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
+                    contentView.setTextViewText(R.id.notification_title, currentMetadata.song);
+                    contentView.setTextViewText(R.id.notification_subtitle, currentMetadata.artist);
+                    if(e == null) {
+                        contentView.setImageViewBitmap(R.id.notification_album_art, albumArt);
+                    }
+                    Intent playPauseIntent;
+                    Intent stopIntent = new Intent(ACTION_STOP);
+                    if(isPlaying()) {
+                        int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_pause : R.drawable.ic_pause_light;
+                        contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
+                        playPauseIntent = new Intent(ACTION_PAUSE);
+                    }
+                    else {
+                        int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_play_arrow : R.drawable.ic_play_arrow_light;
+                        contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
+                        playPauseIntent = new Intent(ACTION_PLAY);
+                    }
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, RadioActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            PendingIntent playPausePendingIntent = PendingIntent.getService(this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(RadioService.this, 0, new Intent(RadioService.this, RadioActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent playPausePendingIntent = PendingIntent.getService(RadioService.this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent stopPendingIntent = PendingIntent.getService(RadioService.this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            contentView.setOnClickPendingIntent(R.id.notification_play_pause_button, playPausePendingIntent);
-            contentView.setOnClickPendingIntent(R.id.notification_close_button, stopPendingIntent);
+                    contentView.setOnClickPendingIntent(R.id.notification_play_pause_button, playPausePendingIntent);
+                    contentView.setOnClickPendingIntent(R.id.notification_close_button, stopPendingIntent);
 
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            Notification notification = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContent(contentView)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(false)
-                    .setOngoing(true)
-                    .build();
+                    Notification notification = new NotificationCompat.Builder(RadioService.this)
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setContent(contentView)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(false)
+                            .setOngoing(true)
+                            .build();
 
-            startForeground(NOTIFICATION_ID, notification);
+                    startForeground(NOTIFICATION_ID, notification);
+                }
+
+            });
         }
     }
 
@@ -442,9 +454,9 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         RadioActivity.log("RadioService.onMetadataChanged");
         currentMetadata = metadata;
         Intent avrcp = new Intent("com.android.music.metachanged");
-            avrcp.putExtra("track", metadata.song);
-            avrcp.putExtra("artist", metadata.artist);
-            avrcp.putExtra("album", metadata.album);
+        avrcp.putExtra("track", metadata.song);
+        avrcp.putExtra("artist", metadata.artist);
+        avrcp.putExtra("album", metadata.album);
         sendBroadcast(avrcp);
         updateNotification();
     }
