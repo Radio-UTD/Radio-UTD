@@ -47,7 +47,7 @@ public class MetadataManager
                 Metadata metadata = new Metadata();
                 if(json.get("onAir").getAsInt() != 1)
                 {
-                    metadata.showName = "Offair";
+                    metadata.artist = "Offair";
                     metadata.song = "Offair Playlist";
                 }
                 else
