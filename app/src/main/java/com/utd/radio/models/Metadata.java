@@ -3,7 +3,7 @@ package com.utd.radio.models;
 public class Metadata {
 
     public Metadata() {
-        artist = song = album = showName = showDJ =  "";
+        artist = song = album = showName = showDJ = avatar = "";
     }
 
     public String artist;

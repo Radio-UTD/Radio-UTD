@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.koushikdutta.ion.Ion;
 import com.utd.radio.R;
 import com.utd.radio.RadioActivity;
 import com.utd.radio.RadioService;
@@ -28,6 +30,7 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
     TextView artistTextView, songTextView, showNameTextView, showDJTextView;
     ImageButton playPauseButton;
     CircularProgressView loadingAnim;
+    ImageView albumArtImageView;
 
     RelativeLayout mainRadioLayout;
     RelativeLayout disconnectedLayout;
@@ -78,7 +81,9 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         artistTextView = (TextView) view.findViewById(R.id.player_artist);
         showNameTextView = (TextView) view.findViewById(R.id.show_name);
         showDJTextView = (TextView) view.findViewById(R.id.show_dj);
-        loadingAnim = (CircularProgressView) view.findViewById((R.id.loading_anim));
+        loadingAnim = (CircularProgressView) view.findViewById(R.id.loading_anim);
+        albumArtImageView = (ImageView) view.findViewById(R.id.largeAlbumArt);
+
         playPauseButton = ((ImageButton)view.findViewById(R.id.playPauseButton));
         playPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,11 +150,20 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
 
     @Override
     public void onMetadataChanged(Metadata metadata) {
-        currentMetadata = metadata;
         songTextView.setText(metadata.song);
         artistTextView.setText(metadata.artist);
         showNameTextView.setText(metadata.showName);
         showDJTextView.setText(metadata.showDJ);
+        RadioActivity.log(currentMetadata.toString());
+        RadioActivity.log(metadata.toString());
+        if(albumArtImageView != null && (!metadata.avatar.isEmpty() || !currentMetadata.avatar.equals(metadata.avatar)))
+        {
+            Ion.with(albumArtImageView)
+                    .placeholder(android.R.color.transparent)
+                    .load(metadata.avatar);
+
+        }
+        currentMetadata = metadata;
     }
 
     @Override
