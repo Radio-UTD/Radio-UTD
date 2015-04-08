@@ -25,8 +25,7 @@ import com.utd.radio.util.MetadataManager;
 
 public class RadioFragment extends Fragment implements OnMetadataChangedListener, RadioService.OnStateChangeListener {
 
-    TextView artistTextView;
-    TextView songTextView;
+    TextView artistTextView, songTextView, showNameTextView, showDJTextView;
     ImageButton playPauseButton;
     CircularProgressView loadingAnim;
 
@@ -77,6 +76,8 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
 
         songTextView = (TextView) view.findViewById(R.id.player_song);
         artistTextView = (TextView) view.findViewById(R.id.player_artist);
+        showNameTextView = (TextView) view.findViewById(R.id.show_name);
+        showDJTextView = (TextView) view.findViewById(R.id.show_dj);
         loadingAnim = (CircularProgressView) view.findViewById((R.id.loading_anim));
         playPauseButton = ((ImageButton)view.findViewById(R.id.playPauseButton));
         playPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +148,8 @@ public class RadioFragment extends Fragment implements OnMetadataChangedListener
         currentMetadata = metadata;
         songTextView.setText(metadata.song);
         artistTextView.setText(metadata.artist);
+        showNameTextView.setText(metadata.showName);
+        showDJTextView.setText(metadata.showDJ);
     }
 
     @Override

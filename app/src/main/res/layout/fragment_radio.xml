@@ -30,8 +30,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:paddingRight="80dp"
-                android:singleLine="true"
-                tools:text="Sandstorm" />
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/player_artist"
@@ -40,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                tools:text="Darude ft. Skrillex" />
+                android:singleLine="true"/>
         </LinearLayout>
 
         <ImageView
@@ -73,8 +71,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="Camping Out" />
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/show_dj"
@@ -83,8 +80,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="With Camps" />
+                android:singleLine="true"/>
         </LinearLayout>
 
         <FrameLayout
