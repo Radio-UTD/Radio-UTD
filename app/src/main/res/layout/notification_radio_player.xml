@@ -9,7 +9,8 @@
         android:layout_width="@android:dimen/notification_large_icon_width"
         android:layout_height="@android:dimen/notification_large_icon_height"
         android:scaleType="fitCenter"
-        android:src="@drawable/temp_album_art" />
+        android:background="@color/primary_material_dark"
+        android:src="@drawable/ic_launcher" />
 
     <LinearLayout
         android:layout_width="0dp"

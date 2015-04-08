@@ -8,12 +8,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -22,22 +22,20 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 import com.utd.radio.listeners.OnMetadataChangedListener;
 import com.utd.radio.models.Metadata;
 import com.utd.radio.receivers.ConnectionChangeReceiver;
 import com.utd.radio.util.MetadataManager;
-import com.utd.radio.util.NaivePlsParser;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, OnMetadataChangedListener {
-    private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
+    private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/Live";
     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
     public static final String ACTION_INIT = "com.utd.radio.INIT";
     public static final String ACTION_PLAY = "com.utd.radio.PLAY";
@@ -96,7 +94,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
                 public void run() {
                     if(isPlaying())
-                        MetadataManager.requestMetadata();
+                        MetadataManager.requestMetadata(RadioService.this);
                 }
             }, 0, 45, TimeUnit.SECONDS);
         }
@@ -106,6 +104,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
     public void initMediaPlayer(final boolean autoPlay)
     {
+        RadioActivity.log("RadioService.initMediaPlayer");
 
         // Already initialized
         if(mediaPlayer != null)
@@ -119,66 +118,35 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
 
         setState(RadioState.CONNECTING);
 
-        RadioActivity.log("RadioService.initMediaPlayer");
-        AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
-            @Override
-            protected String doInBackground(String... params) {
-                try
-                {
-                    RadioActivity.log("RadioService.AsyncTask");
-                    NaivePlsParser parser = new NaivePlsParser(new URL(STREAM_URL));
-                    List<String> URLs = parser.getURLs();
-                    if(URLs.isEmpty())
-                        return null;
-                    return URLs.get(0);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
+        try
+        {
+            RadioActivity.log("RadioService.AsyncTask.PostExecute");
+            WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
 
-            @Override
-            protected void onPostExecute(String url) {
-                super.onPostExecute(url);
-                if(url == null)
-                {
-//                    setState(RadioState.DISCONNECTED);
-                    return;
-                }
-                try
-                {
-                    RadioActivity.log("RadioService.AsyncTask.PostExecute");
-                    WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+            wifiLock = wifiManager.createWifiLock(WIFILOCK_TAG);
+            wifiLock.acquire();
 
-                    wifiLock = wifiManager.createWifiLock(WIFILOCK_TAG);
-                    wifiLock.acquire();
-
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setWakeMode(RadioService.this, PowerManager.PARTIAL_WAKE_LOCK);
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mediaPlayer.setDataSource(url);
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            setState(RadioState.PAUSED);
-                            if(autoPlay)
-                                play();
-                        }
-                    });
-                    mediaPlayer.setOnCompletionListener(RadioService.this);
-                    mediaPlayer.setOnErrorListener(RadioService.this);
-                    mediaPlayer.setOnInfoListener(RadioService.this);
-                    setState(RadioState.BUFFERING);
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setWakeMode(RadioService.this, PowerManager.PARTIAL_WAKE_LOCK);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setDataSource(STREAM_URL);
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    setState(RadioState.PAUSED);
+                    if (autoPlay)
+                        play();
                 }
-            }
-        };
-        task.execute();
+            });
+            mediaPlayer.setOnCompletionListener(RadioService.this);
+            mediaPlayer.setOnErrorListener(RadioService.this);
+            mediaPlayer.setOnInfoListener(RadioService.this);
+            setState(RadioState.BUFFERING);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -202,7 +170,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             {
                 mediaPlayer.start();
                 setState(RadioState.PLAYING);
-                MetadataManager.requestMetadata();
+                MetadataManager.requestMetadata(this);
                 updateNotification();
             }
         }
@@ -221,7 +189,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         {
             mediaPlayer.pause();
             setState(RadioState.PAUSED);
-//            MetadataManager.requestMetadata();
             updateNotification();
         }
 
@@ -247,7 +214,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
             wifiLock.release();
         wifiLock = null;
 
-//        MetadataManager.requestMetadata();
         stopSelf();
     }
 
@@ -307,6 +273,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         RadioActivity.log("RadioService.onError");
+        setState(RadioState.DISCONNECTED);
         return false;
     }
 
@@ -396,40 +363,49 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         }
         else
         {
-            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
-            contentView.setTextViewText(R.id.notification_title, currentMetadata.song);
-            contentView.setTextViewText(R.id.notification_subtitle, currentMetadata.artist);
-            Intent playPauseIntent;
-            Intent stopIntent = new Intent(ACTION_STOP);
-            if(isPlaying()) {
-                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_pause : R.drawable.ic_pause_light;
-                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
-                playPauseIntent = new Intent(ACTION_PAUSE);
-            }
-            else {
-                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_play_arrow : R.drawable.ic_play_arrow_light;
-                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
-                playPauseIntent = new Intent(ACTION_PLAY);
-            }
+            Ion.with(this).load(currentMetadata.avatar).asBitmap().setCallback(new FutureCallback<Bitmap>() {
+                @Override
+                public void onCompleted(Exception e, Bitmap albumArt) {
+                    RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
+                    contentView.setTextViewText(R.id.notification_title, currentMetadata.song);
+                    contentView.setTextViewText(R.id.notification_subtitle, currentMetadata.artist);
+                    if(e == null) {
+                        contentView.setImageViewBitmap(R.id.notification_album_art, albumArt);
+                    }
+                    Intent playPauseIntent;
+                    Intent stopIntent = new Intent(ACTION_STOP);
+                    if(isPlaying()) {
+                        int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_pause : R.drawable.ic_pause_light;
+                        contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
+                        playPauseIntent = new Intent(ACTION_PAUSE);
+                    }
+                    else {
+                        int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_play_arrow : R.drawable.ic_play_arrow_light;
+                        contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
+                        playPauseIntent = new Intent(ACTION_PLAY);
+                    }
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, RadioActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            PendingIntent playPausePendingIntent = PendingIntent.getService(this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(RadioService.this, 0, new Intent(RadioService.this, RadioActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent playPausePendingIntent = PendingIntent.getService(RadioService.this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent stopPendingIntent = PendingIntent.getService(RadioService.this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            contentView.setOnClickPendingIntent(R.id.notification_play_pause_button, playPausePendingIntent);
-            contentView.setOnClickPendingIntent(R.id.notification_close_button, stopPendingIntent);
+                    contentView.setOnClickPendingIntent(R.id.notification_play_pause_button, playPausePendingIntent);
+                    contentView.setOnClickPendingIntent(R.id.notification_close_button, stopPendingIntent);
 
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-            Notification notification = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContent(contentView)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(false)
-                    .setOngoing(true)
-                    .build();
+                    Notification notification = new NotificationCompat.Builder(RadioService.this)
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setContent(contentView)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(false)
+                            .setOngoing(true)
+                            .build();
 
-            startForeground(NOTIFICATION_ID, notification);
+                    startForeground(NOTIFICATION_ID, notification);
+                }
+
+            });
         }
     }
 
@@ -442,9 +418,9 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
         RadioActivity.log("RadioService.onMetadataChanged");
         currentMetadata = metadata;
         Intent avrcp = new Intent("com.android.music.metachanged");
-            avrcp.putExtra("track", metadata.song);
-            avrcp.putExtra("artist", metadata.artist);
-            avrcp.putExtra("album", metadata.album);
+        avrcp.putExtra("track", metadata.song);
+        avrcp.putExtra("artist", metadata.artist);
+        avrcp.putExtra("album", metadata.album);
         sendBroadcast(avrcp);
         updateNotification();
     }
