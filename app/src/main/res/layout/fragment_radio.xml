@@ -2,7 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!-- Background Icon layout -->
+    <RelativeLayout
+        android:id="@+id/background_radio_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="76dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/background_radio_icon"
+            android:layout_centerInParent="true"
+            android:alpha=".40"
+            />
+    </RelativeLayout>
     <!-- Main layout -->
     <RelativeLayout
         android:id="@+id/main_radio_layout"
@@ -30,8 +45,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:paddingRight="80dp"
-                android:singleLine="true"
-                tools:text="Sandstorm" />
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/player_artist"
@@ -40,8 +54,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                tools:text="Darude ft. Skrillex" />
+                android:singleLine="true"/>
         </LinearLayout>
 
         <ImageView
@@ -50,7 +63,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/player_bottom_bar"
             android:scaleType="centerCrop"
-            android:src="@drawable/temp_album_art" />
+            android:src="@android:color/transparent" />
 
         <View
             android:layout_width="match_parent"
@@ -73,8 +86,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="Camping Out" />
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/show_dj"
@@ -83,8 +95,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:singleLine="true"
-                android:text="With Camps" />
+                android:singleLine="true"/>
         </LinearLayout>
 
         <FrameLayout

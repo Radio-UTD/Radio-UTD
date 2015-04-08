@@ -3,16 +3,18 @@ package com.utd.radio.models;
 public class Metadata {
 
     public Metadata() {
-        artist = song = album = showName = "";
+        artist = song = album = showName = showDJ = avatar = "";
     }
 
     public String artist;
     public String song;
     public String album;
     public String showName;
+    public String showDJ;
+    public String avatar;
 
     @Override
     public String toString() {
-        return artist + " - " + song + " [" + album + "] {" + showName + "}";
+        return artist + " - " + song + " [" + album + "] {" + showName + " with " + showDJ + "} (" + avatar + ")";
     }
 }

@@ -144,7 +144,7 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
                 super.onPostExecute(url);
                 if(url == null)
                 {
-                    setState(RadioState.DISCONNECTED);
+//                    setState(RadioState.DISCONNECTED);
                     return;
                 }
                 try
