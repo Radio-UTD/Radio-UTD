@@ -2,22 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- Background Icon layout -->
-    <RelativeLayout
-        android:id="@+id/background_radio_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginBottom="76dp"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/background_radio_icon"
-            android:layout_centerInParent="true"
-            android:alpha=".40"
-            />
-    </RelativeLayout>
     <!-- Main layout -->
     <RelativeLayout
         android:id="@+id/main_radio_layout"
@@ -25,6 +9,15 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/background_radio_icon"
+            android:layout_centerInParent="true"
+            android:alpha=".40"
+            android:paddingBottom="76dp"
+            />
 
         <ImageView
             android:id="@+id/largeAlbumArt"
