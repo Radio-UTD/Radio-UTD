@@ -8,7 +8,7 @@
     <color name="nav_list_item_bg">#FFF</color>
     <color name="nav_list_bg">#FFF</color>
 
-    <color name="player_main_color">#DDFFFFFF</color>
+    <color name="player_main_color">#FFFFFF</color>
     <color name="nav_list_item_bg_pressed">#DDD</color>
     <color name="nav_list_item_bg_selected">#EEE</color>
 
