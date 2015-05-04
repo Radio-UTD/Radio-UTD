@@ -27,7 +27,7 @@ public class ShowsFragment extends Fragment {
     private ThumbnailCardAdapter cardAdapter;
 
     public enum Day {
-        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+        Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
     }
 
     public ShowsFragment() {

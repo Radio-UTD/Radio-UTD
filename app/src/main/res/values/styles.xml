@@ -28,7 +28,7 @@
 
     <!-- TODO: Change this on larger layouts like landscape -->
     <style name="ThumbnailCardGrid">
-        <item name="android:numColumns">2</item>
+        <item name="android:numColumns">1</item>
     </style>
 
     <style name="PlayerBar">
@@ -80,4 +80,7 @@
         <item name="android:layout_marginTop">-36dp</item>
     </style>
 
+    <style name="PagerSlidingTabStrip">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 </resources>
