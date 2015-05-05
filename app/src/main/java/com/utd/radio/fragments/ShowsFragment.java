@@ -39,12 +39,11 @@ public class ShowsFragment extends Fragment {
         Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
     }
 
-    public ShowsFragment(Day day) {
-        this.day = day;
+    public ShowsFragment() {
     }
 
     public static ShowsFragment newInstance(Day day) {
-        ShowsFragment fragment = new ShowsFragment(day);
+        ShowsFragment fragment = new ShowsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_DAY, day.ordinal());
         fragment.setArguments(args);
@@ -65,6 +64,7 @@ public class ShowsFragment extends Fragment {
         super.onAttach(activity);
         ((RadioActivity)activity).restoreActionBar(getString(R.string.drawer_title_shows));
 
+        day = Day.values()[getArguments().getInt(ARG_DAY)];
         cardAdapter = new ThumbnailCardAdapter(getActivity());
 
         Ion.with(activity).load(SHOWS_URL).asDocument().setCallback(new FutureCallback<Document>() {
