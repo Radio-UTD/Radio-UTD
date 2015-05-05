@@ -7,16 +7,15 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/show_card_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitStart"
-            android:src="@drawable/temp_album_art" />
+            android:src="@drawable/temp_album_art"
+            android:scaleType="fitStart" />
 
         <LinearLayout
             android:id="@+id/show_card_text"
@@ -26,7 +25,7 @@
 
             <TextView
                 android:id="@+id/show_card_title"
-                style="@style/TextPrimary"
+                style="@style/TextPrimary.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -34,13 +33,25 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="Camping Out with Camps" />
+                android:text="Camping Out" />
 
             <TextView
                 android:id="@+id/show_card_subtitle"
+                style="@style/TextSecondary.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="with Camps" />
+
+            <TextView
+                android:id="@+id/show_card_subsubtitle"
                 style="@style/TextTertiary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"

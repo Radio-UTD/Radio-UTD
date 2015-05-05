@@ -111,7 +111,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), ShowsFragment.class){
             @Override
             public Fragment getFragmentInstance() {
-                return ShowsFragment.newInstance(ShowsFragment.Day.Monday);
+                return TabbedShowsFragment.newInstance();
             }
         });
         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_social), SocialFragment.class){

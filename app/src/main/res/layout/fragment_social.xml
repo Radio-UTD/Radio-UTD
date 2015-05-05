@@ -7,4 +7,92 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <ScrollView android:layout_height="fill_parent"
+        android:layout_width="fill_parent">
+        <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom">
+
+            <ImageView
+                android:layout_width="256dp"
+                android:layout_height="200dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo"
+                android:layout_margin="10dp" />
+
+            <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Call In"
+            android:id="@+id/buttonc"
+            android:drawableLeft="@drawable/ic_phone_white_24dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/PlayerButton" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Facebook"
+            android:id="@+id/buttonf"
+            android:drawableLeft="@drawable/ic_facebook_box_white_24dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/PlayerButton" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Twitter"
+            android:id="@+id/buttont"
+            android:drawableLeft="@drawable/ic_twitter_box_white_24dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/PlayerButton" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Instagram"
+            android:id="@+id/buttoni"
+            android:drawableLeft="@drawable/ic_instagram_white_24dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/PlayerButton" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="E-Mail"
+            android:id="@+id/buttone"
+            android:drawableLeft="@drawable/ic_email_white_24dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/PlayerButton" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="RSS"
+            android:id="@+id/buttonr"
+            android:drawableLeft="@drawable/ic_rss_box_white_24dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/PlayerButton" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center">
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Radio UTD Android application created by Rahat Ahmed"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            style="@style/TextPrimary"
+            android:gravity="center"
+            android:padding="8dp" />
+        </LinearLayout>
+</ScrollView>
 </FrameLayout>
