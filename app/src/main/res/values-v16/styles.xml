@@ -1,15 +1,21 @@
 <resources>
 
-    <style name="ThumbnailCard.Title">
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <!--<item name="android:background">#0000</item>-->
+    <style name="TextPrimary">
         <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextSecondary">
+        <item name="android:textColor">@color/secondary_text_color</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="PlayerShowDJText">
+        <item name="android:textColor">@color/secondary_text_color_inverse</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
 </resources>

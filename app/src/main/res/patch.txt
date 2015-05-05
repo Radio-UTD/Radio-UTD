@@ -1,0 +1,2158 @@
+diff --git a/app/.gitignore b/app/.gitignore
+index 796b96d..949adf6 100644
+--- a/app/.gitignore
++++ b/app/.gitignore
+@@ -1 +1,3 @@
+ /build
++*.iml
++*.iws
+\ No newline at end of file
+diff --git a/app/app.iml b/app/app.iml
+index 76f41ca..10a0da3 100644
+--- a/app/app.iml
++++ b/app/app.iml
+@@ -9,10 +9,12 @@
+     <facet type="android" name="Android">
+       <configuration>
+         <option name="SELECTED_BUILD_VARIANT" value="debug" />
++        <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
+         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+-        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugJava" />
+-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugTest" />
++        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
++        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugAndroidTest" />
+         <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
++        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugAndroidTestSources" />
+         <option name="ALLOW_USER_CONFIGURATION" value="false" />
+         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+@@ -23,6 +25,7 @@
+   </component>
+   <component name="NewModuleRootManager" inherit-compiler-output="false">
+     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
++    <output-test url="file://$MODULE_DIR$/build/intermediates/classes/androidTest/debug" />
+     <exclude-output />
+     <content url="file://$MODULE_DIR$">
+       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/debug" isTestSource="false" generated="true" />
+@@ -30,29 +33,31 @@
+       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
+       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/debug" isTestSource="false" generated="true" />
+       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/debug" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/test/debug" isTestSource="true" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/test/debug" isTestSource="true" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/debug" isTestSource="true" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/debug" isTestSource="true" generated="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/debug" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/debug" type="java-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/debug" isTestSource="true" generated="true" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/debug" isTestSource="true" generated="true" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/debug" isTestSource="true" generated="true" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/debug" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/androidTest/debug" type="java-test-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" type="java-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/debug/aidl" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/debug/java" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/debug/jni" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/debug/rs" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/main/assets" type="java-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/aidl" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/main/assets" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/aidl" isTestSource="true" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" isTestSource="true" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/jni" isTestSource="true" />
+       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
+@@ -76,12 +81,17 @@
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
+       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
+       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
++      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
+     </content>
+-    <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
++    <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
+     <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="library" exported="" name="appcompat-v7-20.0.0" level="project" />
+-    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+-    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
++    <orderEntry type="library" exported="" name="recyclerview-v7-21.0.0" level="project" />
++    <orderEntry type="library" exported="" name="floatingactionbutton-1.0.6" level="project" />
++    <orderEntry type="library" exported="" name="support-annotations-21.0.0" level="project" />
++    <orderEntry type="library" exported="" name="support-v4-21.0.0" level="project" />
++    <orderEntry type="library" exported="" name="cardview-v7-21.0.3" level="project" />
++    <orderEntry type="library" exported="" name="circularprogressview-2.0.0" level="project" />
++    <orderEntry type="library" exported="" name="appcompat-v7-21.0.0" level="project" />
+   </component>
+ </module>
+ 
+diff --git a/app/build.gradle b/app/build.gradle
+index 993107a..0f8c79b 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -1,26 +1,29 @@
+ apply plugin: 'com.android.application'
+ 
+ android {
+-    compileSdkVersion 20
+-    buildToolsVersion "20.0.0"
+-
++    compileSdkVersion 21
++    buildToolsVersion "21.1.1"
+     defaultConfig {
+         applicationId "radio.utd.com.radioutd"
+-        minSdkVersion 9
+-        targetSdkVersion 20
++        minSdkVersion 14
++        targetSdkVersion 21
+         versionCode 1
+         versionName "1.0"
+     }
+     buildTypes {
+         release {
+-            runProguard false
++            minifyEnabled false
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+         }
+     }
++    productFlavors {
++    }
+ }
+ 
+ dependencies {
+-    compile fileTree(dir: 'libs', include: ['*.jar'])
+-    compile 'com.android.support:appcompat-v7:20.0.0'
+-    compile 'com.android.support:support-v4:20.0.0'
++    compile fileTree(include: ['*.jar'], dir: 'libs')
++    compile 'com.android.support:appcompat-v7:21.0.0'
++    compile 'com.android.support:cardview-v7:21.0.+'
++    compile 'com.melnykov:floatingactionbutton:1.0.6'
++    compile 'com.github.rahatarmanahmed:circularprogressview:2.0.0'
+ }
+diff --git a/app/src/androidTest/java/com/utd/radio/ApplicationTest.java b/app/src/androidTest/java/com/utd/radio/ApplicationTest.java
+deleted file mode 100644
+index df73145..0000000
+--- a/app/src/androidTest/java/com/utd/radio/ApplicationTest.java
++++ /dev/null
+@@ -1,13 +0,0 @@
+-package com.utd.radio;
+-
+-import android.app.Application;
+-import android.test.ApplicationTestCase;
+-
+-/**
+- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+- */
+-public class ApplicationTest extends ApplicationTestCase<Application> {
+-    public ApplicationTest() {
+-        super(Application.class);
+-    }
+-}
+\ No newline at end of file
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 2fa6cd3..41dd246 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -2,8 +2,10 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="com.utd.radio" >
+ 
+-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
++    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
++    <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.WAKE_LOCK" />
++    <uses-permission android:name="android.permission.CALL_PHONE" />
+ 
+     <application
+         android:allowBackup="true"
+@@ -12,7 +14,7 @@
+         android:supportsRtl="true"
+         android:theme="@style/AppTheme" >
+         <activity
+-            android:name=".RadioActivity"
++            android:name="com.utd.radio.RadioActivity"
+             android:label="@string/app_name" >
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+@@ -22,10 +24,27 @@
+         </activity>
+ 
+         <service
+-            android:name=".RadioService"
++            android:name="com.utd.radio.RadioService"
+             android:enabled="true"
+             android:exported="false" >
++            <intent-filter>
++                <action android:name="com.utd.radio.INIT" />
++                <action android:name="com.utd.radio.PLAY" />
++                <action android:name="com.utd.radio.PAUSE" />
++                <action android:name="com.utd.radio.STOP" />
++
++                <category android:name="android.intent.category.DEFAULT" />
++            </intent-filter>
+         </service>
++
++        <receiver
++            android:name="com.utd.radio.receivers.ConnectionChangeReceiver"
++            android:enabled="false"
++            android:exported="true" >
++            <intent-filter>
++                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
++            </intent-filter>
++        </receiver>
+     </application>
+ 
+ </manifest>
+diff --git a/app/src/main/java/com/utd/radio/RadioActivity.java b/app/src/main/java/com/utd/radio/RadioActivity.java
+index b28e94c..cebdbf8 100644
+--- a/app/src/main/java/com/utd/radio/RadioActivity.java
++++ b/app/src/main/java/com/utd/radio/RadioActivity.java
+@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
+ import android.support.v4.widget.DrawerLayout;
+ import android.support.v7.app.ActionBar;
+ import android.support.v7.app.ActionBarActivity;
++import android.support.v7.widget.Toolbar;
+ import android.util.Log;
++import android.widget.Toast;
+ 
+ import com.utd.radio.fragments.NavigationDrawerFragment;
+ import com.utd.radio.models.NavigationDrawerItem;
+@@ -20,6 +22,7 @@ public class RadioActivity extends ActionBarActivity
+         Log.d(TAG, str);
+     }
+ 
++
+     /**
+      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+      */
+@@ -30,6 +33,12 @@ public class RadioActivity extends ActionBarActivity
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_radio);
+ 
++        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        setSupportActionBar(toolbar);
++        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++        getSupportActionBar().setHomeButtonEnabled(true);
++
++
+         mNavigationDrawerFragment = (NavigationDrawerFragment)
+                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+ 
+@@ -38,7 +47,6 @@ public class RadioActivity extends ActionBarActivity
+                 R.id.navigation_drawer,
+                 (DrawerLayout) findViewById(R.id.drawer_layout));
+     }
+-
+     @Override
+     public void onNavigationDrawerItemSelected(NavigationDrawerItem item) {
+         // update the main content by replacing fragments
+diff --git a/app/src/main/java/com/utd/radio/RadioService.java b/app/src/main/java/com/utd/radio/RadioService.java
+index eb914b7..3b77f2b 100644
+--- a/app/src/main/java/com/utd/radio/RadioService.java
++++ b/app/src/main/java/com/utd/radio/RadioService.java
+@@ -1,42 +1,72 @@
+ package com.utd.radio;
+ 
++import android.app.Notification;
++import android.app.NotificationManager;
++import android.app.PendingIntent;
+ import android.app.Service;
++import android.content.ComponentName;
++import android.content.Context;
+ import android.content.Intent;
++import android.content.pm.PackageManager;
+ import android.media.AudioManager;
+ import android.media.MediaPlayer;
++import android.net.ConnectivityManager;
++import android.net.NetworkInfo;
+ import android.net.wifi.WifiManager;
+ import android.os.AsyncTask;
+ import android.os.Binder;
++import android.os.Build;
+ import android.os.IBinder;
+ import android.os.PowerManager;
++import android.support.v4.app.NotificationCompat;
++import android.widget.RemoteViews;
+ import android.widget.Toast;
+ 
++import com.utd.radio.listeners.OnMetadataChangedListener;
++import com.utd.radio.models.Metadata;
++import com.utd.radio.receivers.ConnectionChangeReceiver;
++import com.utd.radio.util.MetadataManager;
+ import com.utd.radio.util.NaivePlsParser;
+ 
+ import java.io.IOException;
+ import java.net.MalformedURLException;
+ import java.net.URL;
+ import java.util.List;
++import java.util.concurrent.Executors;
++import java.util.concurrent.ScheduledExecutorService;
++import java.util.concurrent.TimeUnit;
+ 
+-public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+-    public static final String urlStr = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
++public class RadioService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, OnMetadataChangedListener {
++    private static final String STREAM_URL = "http://ghost.wavestreamer.com:5674/listen.pls?sid=1";
+     private static final String WIFILOCK_TAG = "RadioService.Wifilock";
+-    public static final String ACTION_INIT = "ACTION_INIT";
+-    public static final String ACTION_PLAY = "ACTION_PLAY";
+-    public static final String ACTION_PAUSE = "ACTION_PAUSE";
+-    public static final String ACTION_STOP = "ACTION_STOP";
++    public static final String ACTION_INIT = "com.utd.radio.INIT";
++    public static final String ACTION_PLAY = "com.utd.radio.PLAY";
++    public static final String ACTION_PAUSE = "com.utd.radio.PAUSE";
++    public static final String ACTION_STOP = "com.utd.radio.STOP";
++
++    public static final int NOTIFICATION_ID = 5;
++
++    public enum RadioState {
++        DISCONNECTED,
++        CONNECTING,
++        BUFFERING,
++        PLAYING,
++        PAUSED
++    }
+ 
+-    private boolean playerReady;
+     private MediaPlayer mediaPlayer;
+-
+-    private OnReadyListener onReadyListener;
++    private OnStateChangeListener onStateChangeListener;
+ 
+     private WifiManager.WifiLock wifiLock;
+ 
+-    // TODO: cpu lock
+-    // TODO: wake lock
+-
+     private RadioBinder binder = new RadioBinder();
++    private boolean isBound = false;
++
++    private Metadata currentMetadata = new Metadata();
++
++    private ScheduledExecutorService scheduleTaskExecutor;
++
++    private RadioState currentState;
+ 
+     public RadioService() {
+     }
+@@ -44,9 +74,6 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+     @Override
+     public int onStartCommand(Intent intent, int flags, int startId) {
+         RadioActivity.log("RadioService.onStartCommand");
+-        RadioActivity.log("\tReceived intent: " + intent);
+-        RadioActivity.log("\tReceived intent action: " + ((intent != null) ? intent.getAction() : "no action"));
+-        RadioActivity.log("RadioService.onStartCommand");
+ 
+         if(null != intent && null != intent.getAction())
+         {
+@@ -60,18 +87,38 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+                 stop();
+         }
+         else {
+-            initMediaPlayer(false);
++            initMediaPlayer(true);
+         }
+ 
+-        return Service.START_REDELIVER_INTENT;
++        if(scheduleTaskExecutor == null)
++        {
++            scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
++            scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
++                public void run() {
++                    if(isPlaying())
++                        MetadataManager.requestMetadata();
++                }
++            }, 0, 45, TimeUnit.SECONDS);
++        }
++
++        return Service.START_STICKY;
+     }
+ 
+     public void initMediaPlayer(final boolean autoPlay)
+     {
++
+         // Already initialized
+         if(mediaPlayer != null)
+             return;
+ 
++        if(!isConnectionAvailable())
++        {
++            setState(RadioState.DISCONNECTED);
++            return;
++        }
++
++        setState(RadioState.CONNECTING);
++
+         RadioActivity.log("RadioService.initMediaPlayer");
+         AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
+             @Override
+@@ -79,17 +126,14 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+                 try
+                 {
+                     RadioActivity.log("RadioService.AsyncTask");
+-                    NaivePlsParser parser = new NaivePlsParser(new URL(urlStr));
++                    NaivePlsParser parser = new NaivePlsParser(new URL(STREAM_URL));
+                     List<String> URLs = parser.getURLs();
+                     if(URLs.isEmpty())
+                         return null;
+-                    String url = URLs.get(0);
+-                    return url;
++                    return URLs.get(0);
+                 } catch (MalformedURLException e) {
+-                    Toast.makeText(RadioService.this, "Something dumb happened", Toast.LENGTH_LONG).show();
+                     e.printStackTrace();
+                 } catch (IOException e) {
+-                    Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
+                     e.printStackTrace();
+                 }
+                 return null;
+@@ -98,6 +142,11 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+             @Override
+             protected void onPostExecute(String url) {
+                 super.onPostExecute(url);
++                if(url == null)
++                {
++                    setState(RadioState.DISCONNECTED);
++                    return;
++                }
+                 try
+                 {
+                     RadioActivity.log("RadioService.AsyncTask.PostExecute");
+@@ -113,57 +162,69 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+                     mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                         @Override
+                         public void onPrepared(MediaPlayer mp) {
+-                            playerReady = true;
+-                            onReadyListener.onReady();
++                            setState(RadioState.PAUSED);
+                             if(autoPlay)
+                                 play();
+                         }
+                     });
+                     mediaPlayer.setOnCompletionListener(RadioService.this);
+                     mediaPlayer.setOnErrorListener(RadioService.this);
+-
++                    mediaPlayer.setOnInfoListener(RadioService.this);
++                    setState(RadioState.BUFFERING);
+                     mediaPlayer.prepareAsync();
+                 } catch (IOException e) {
+                     Toast.makeText(RadioService.this, "Unable to find Radio UTD stream URL", Toast.LENGTH_LONG).show();
+                     e.printStackTrace();
+                 }
+             }
+-        }.execute();
++        };
++        task.execute();
+     }
+ 
+     @Override
+     public void onDestroy() {
+         super.onDestroy();
+         RadioActivity.log("RadioService.onDestroy");
++        MetadataManager.removeListener(this);
+     }
+ 
+-
+-
+     public void play()
+     {
+         RadioActivity.log("RadioService.Play");
+-        if(mediaPlayer == null)
+-            initMediaPlayer(true);
+-        else
++        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
++        int result = am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
++        if(result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
+         {
+-            mediaPlayer.start();
+-
+-            AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+-            am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+-
+-            Intent avrcp = new Intent("com.android.music.metachanged");
+-            avrcp.putExtra("track", "Sandstorm");
+-            avrcp.putExtra("artist", "Darude");
+-            avrcp.putExtra("album", "Runescape Classics Vol 2");
+-            sendBroadcast(avrcp);
++            RadioActivity.log("RadioService.Play Audio Focus Request Granted");
++            if(mediaPlayer == null)
++                initMediaPlayer(true);
++            else
++            {
++                mediaPlayer.start();
++                setState(RadioState.PLAYING);
++                MetadataManager.requestMetadata();
++                updateNotification();
++            }
++        }
++        else if(result == AudioManager.AUDIOFOCUS_REQUEST_FAILED)
++        {
++            RadioActivity.log("RadioService.Play Audio Focus Request Failed");
+         }
+     }
+ 
++
++
+     public void pause()
+     {
+         RadioActivity.log("RadioService.Pause");
+         if(mediaPlayer != null)
++        {
+             mediaPlayer.pause();
++            setState(RadioState.PAUSED);
++//            MetadataManager.requestMetadata();
++            updateNotification();
++        }
++
+     }
+ 
+     public void stop()
+@@ -173,17 +234,20 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+         {
+             mediaPlayer.stop();
+             mediaPlayer.release();
+-            playerReady = false;
+ 
+             AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+             am.abandonAudioFocus(audioFocusListener);
+         }
++
++        hideNotification();
++
+         mediaPlayer = null;
+ 
+         if(wifiLock != null)
+             wifiLock.release();
+         wifiLock = null;
+ 
++//        MetadataManager.requestMetadata();
+         stopSelf();
+     }
+ 
+@@ -191,20 +255,55 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+     public void onCreate() {
+         super.onCreate();
+         RadioActivity.log("RadioService.onCreate");
+-        playerReady = false;
++        MetadataManager.addListener(this);
+     }
+ 
+     @Override
+     public IBinder onBind(Intent intent) {
+         RadioActivity.log("RadioService.onBind");
++        isBound = true;
++        updateNotification();
+         return binder;
+     }
+ 
+     @Override
++    public boolean onUnbind(Intent intent) {
++        RadioActivity.log("RadioService.onUnbind");
++        isBound = false;
++        if(isPlaying())
++            updateNotification();
++        else
++            stopSelf();
++        return true;
++    }
++
++    @Override
++    public void onRebind(Intent intent) {
++        RadioActivity.log("RadioService.onRebind");
++        isBound = true;
++        updateNotification();
++    }
++
++    @Override
+     public void onCompletion(MediaPlayer mp) {
+ 
+     }
+ 
++
++    @Override
++    public boolean onInfo(MediaPlayer mp, int what, int extra) {
++        RadioActivity.log("RadioService.onInfo " + what);
++        if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
++        {
++            setState(RadioState.BUFFERING);
++        }
++        else if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
++        {
++            setState(isPlaying() ? RadioState.PLAYING : RadioState.PAUSED);
++        }
++        return false;
++    }
++
+     @Override
+     public boolean onError(MediaPlayer mp, int what, int extra) {
+         RadioActivity.log("RadioService.onError");
+@@ -217,64 +316,171 @@ public class RadioService extends Service implements MediaPlayer.OnCompletionLis
+         return false;
+     }
+ 
+-    public boolean isReady() {
+-        return playerReady;
++    public void setOnStateChangeListener(OnStateChangeListener listener){
++        onStateChangeListener = listener;
+     }
+ 
+-    public void setOnReadyListener(OnReadyListener listener){
+-        onReadyListener = listener;
+-        if(playerReady)
+-            onReadyListener.onReady();
+-    }
+-
+-
+     public class RadioBinder extends Binder {
+-
+         public RadioService getService() {
+             return RadioService.this;
+         }
+-
+     }
+ 
+-    public interface OnReadyListener {
+-        public void onReady();
++    public interface OnStateChangeListener {
++        public void onStateChange(RadioState state);
+     }
+ 
+     AudioManager.OnAudioFocusChangeListener audioFocusListener =  new AudioManager.OnAudioFocusChangeListener() {
+-        int duckingVolume = -1;
++
+         AudioManager audio;
++        int lastKnownAudioFocusState;
++        int duckingVolume = -1;
++        boolean wasPlayingWhenTransientLoss = false;
++
+         @Override
+         public void onAudioFocusChange(int focusChange) {
+-            switch(focusChange)
+-            {
+-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+-                    audio = (AudioManager) getSystemService(AUDIO_SERVICE);
+-                    duckingVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+-                    int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+-                    audio.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(maxVolume*.3f), 0);
+-                    break;
++            RadioActivity.log("RadioService.onAudioFocusChange " +focusChange);
++            switch (focusChange) {
++                case AudioManager.AUDIOFOCUS_GAIN:
+ 
+-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+-                    duckingVolume = -1;
+-                    pause();
+-                    break;
++                    switch(lastKnownAudioFocusState) {
++                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
++                            if(wasPlayingWhenTransientLoss) {
++                                play();
++                            }
++                            break;
++                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
++                            restoreVolume();
++                            break;
++                        default:
++                            if(!isPlaying()) {
++                                play();
++                            }
++                            break;
++                    }
+ 
++                    break;
+                 case AudioManager.AUDIOFOCUS_LOSS:
+-                    duckingVolume = -1;
+                     stop();
+                     break;
+-
+-                case AudioManager.AUDIOFOCUS_GAIN:
+-                    duckingVolume = -1;
+-                    play();
+-                    if(duckingVolume != -1)
+-                    {
+-                        audio = (AudioManager) getSystemService(AUDIO_SERVICE);
+-                        audio.setStreamVolume(AudioManager.STREAM_MUSIC, duckingVolume, 0);
+-                    }
++                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
++                    wasPlayingWhenTransientLoss = isPlaying();
++                    pause();
++                    break;
++                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
++                    duckVolume();
+                     break;
+-
+             }
++            lastKnownAudioFocusState = focusChange;
++        }
++
++        private void duckVolume()
++        {
++            audio = (AudioManager) getSystemService(AUDIO_SERVICE);
++            duckingVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
++            audio.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(duckingVolume*.3f), 0);
++        }
++
++        private void restoreVolume()
++        {
++            audio = (AudioManager) getSystemService(AUDIO_SERVICE);
++            audio.setStreamVolume(AudioManager.STREAM_MUSIC, duckingVolume, 0);
+         }
+     };
++
++    private void updateNotification()
++    {
++        if(isBound)
++        {
++            hideNotification();
++        }
++        else
++        {
++            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_radio_player);
++            contentView.setTextViewText(R.id.notification_title, currentMetadata.song);
++            contentView.setTextViewText(R.id.notification_subtitle, currentMetadata.artist);
++            Intent playPauseIntent;
++            Intent stopIntent = new Intent(ACTION_STOP);
++            if(isPlaying()) {
++                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_pause : R.drawable.ic_pause_light;
++                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
++                playPauseIntent = new Intent(ACTION_PAUSE);
++            }
++            else {
++                int icon = (Build.VERSION.SDK_INT >= 21) ? R.drawable.ic_play_arrow : R.drawable.ic_play_arrow_light;
++                contentView.setImageViewResource(R.id.notification_play_pause_button, icon);
++                playPauseIntent = new Intent(ACTION_PLAY);
++            }
++
++            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, RadioActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
++            PendingIntent playPausePendingIntent = PendingIntent.getService(this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
++            PendingIntent stopPendingIntent = PendingIntent.getService(this, 0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
++
++            contentView.setOnClickPendingIntent(R.id.notification_play_pause_button, playPausePendingIntent);
++            contentView.setOnClickPendingIntent(R.id.notification_close_button, stopPendingIntent);
++
++            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
++
++            Notification notification = new NotificationCompat.Builder(this)
++                    .setSmallIcon(R.drawable.ic_launcher)
++                    .setContent(contentView)
++                    .setContentIntent(pendingIntent)
++                    .setAutoCancel(false)
++                    .setOngoing(true)
++                    .build();
++
++            startForeground(NOTIFICATION_ID, notification);
++        }
++    }
++
++    private void hideNotification() {
++        stopForeground(true);
++    }
++
++    @Override
++    public void onMetadataChanged(Metadata metadata) {
++        RadioActivity.log("RadioService.onMetadataChanged");
++        currentMetadata = metadata;
++        Intent avrcp = new Intent("com.android.music.metachanged");
++            avrcp.putExtra("track", metadata.song);
++            avrcp.putExtra("artist", metadata.artist);
++            avrcp.putExtra("album", metadata.album);
++        sendBroadcast(avrcp);
++        updateNotification();
++    }
++
++    public RadioState getState()
++    {
++        return currentState;
++    }
++
++
++    private void setState(RadioState newState)
++    {
++        RadioState oldState = currentState;
++        currentState = newState;
++        if(onStateChangeListener != null && oldState != newState)
++            onStateChangeListener.onStateChange(newState);
++
++        setConnectionChangeListener(newState == RadioState.DISCONNECTED);
++    }
++
++    private void setConnectionChangeListener(boolean enabled)
++    {
++        ComponentName receiver = new ComponentName(this, ConnectionChangeReceiver.class);
++
++        PackageManager pm = getPackageManager();
++
++        pm.setComponentEnabledSetting(receiver,
++                enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
++                PackageManager.DONT_KILL_APP);
++    }
++
++    private boolean isConnectionAvailable()
++    {
++        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
++
++        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
++        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
++    }
+ }
+diff --git a/app/src/main/java/com/utd/radio/fragments/NavigationDrawerFragment.java b/app/src/main/java/com/utd/radio/fragments/NavigationDrawerFragment.java
+index 9ced7e3..d379d96 100644
+--- a/app/src/main/java/com/utd/radio/fragments/NavigationDrawerFragment.java
++++ b/app/src/main/java/com/utd/radio/fragments/NavigationDrawerFragment.java
+@@ -3,12 +3,13 @@ package com.utd.radio.fragments;
+ import android.app.Activity;
+ import android.content.res.Configuration;
+ import android.os.Bundle;
+-import android.support.v4.app.ActionBarDrawerToggle;
++import android.support.v7.app.ActionBarDrawerToggle;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.view.GravityCompat;
+ import android.support.v4.widget.DrawerLayout;
+ import android.support.v7.app.ActionBar;
+ import android.support.v7.app.ActionBarActivity;
++import android.support.v7.widget.Toolbar;
+ import android.view.LayoutInflater;
+ import android.view.MenuItem;
+ import android.view.View;
+@@ -49,6 +50,7 @@ public class NavigationDrawerFragment extends Fragment {
+      */
+     private ActionBarDrawerToggle mDrawerToggle;
+ 
++    private Toolbar mToolbar;
+     private DrawerLayout mDrawerLayout;
+     private ListView mDrawerListView;
+     private NavigationDrawerAdapter mDrawerAdapter;
+@@ -95,6 +97,8 @@ public class NavigationDrawerFragment extends Fragment {
+             }
+         });
+ 
++        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
++
+         // This is where you add items that will be in the nav list
+         // TODO: make this less dumb
+         mDrawerAdapter = new NavigationDrawerAdapter(this.getActivity());
+@@ -107,7 +111,7 @@ public class NavigationDrawerFragment extends Fragment {
+         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_shows), ShowsFragment.class){
+             @Override
+             public Fragment getFragmentInstance() {
+-                return ShowsFragment.newInstance(ShowsFragment.Day.Monday);
++                return ShowsFragment.newInstance();
+             }
+         });
+         mDrawerAdapter.addItem(new NavigationDrawerItem(getString(R.string.drawer_title_social), SocialFragment.class){
+@@ -120,6 +124,7 @@ public class NavigationDrawerFragment extends Fragment {
+ 
+         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+ 
++
+         // Select either the default item (0) or the last selected item.
+         selectItem(mCurrentSelectedPosition);
+ 
+@@ -153,45 +158,10 @@ public class NavigationDrawerFragment extends Fragment {
+         mDrawerToggle = new ActionBarDrawerToggle(
+                 getActivity(),                    /* host Activity */
+                 mDrawerLayout,                    /* DrawerLayout object */
+-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
++                mToolbar,             /* Activity Toolbar */
+                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
+                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
+-        ); /* {
+-            @Override
+-            public void onDrawerClosed(View drawerView) {
+-                super.onDrawerClosed(drawerView);
+-                if (!isAdded()) {
+-                    return;
+-                }
+-
+-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+-            }
+-
+-            @Override
+-            public void onDrawerOpened(View drawerView) {
+-                super.onDrawerOpened(drawerView);
+-                if (!isAdded()) {
+-                    return;
+-                }
+-
+-                if (!mUserLearnedDrawer) {
+-                    // The user manually opened the drawer; store this flag to prevent auto-showing
+-                    // the navigation drawer automatically in the future.
+-                    mUserLearnedDrawer = true;
+-                    SharedPreferences sp = PreferenceManager
+-                            .getDefaultSharedPreferences(getActivity());
+-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+-                }
+-
+-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+-            }
+-        }; */
+-
+-        // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
+-        // per the navigation drawer design guidelines.
+-//        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
+-//            mDrawerLayout.openDrawer(mFragmentContainerView);
+-//        }
++        );
+ 
+         // Defer code dependent on restoration of previous instance state.
+         mDrawerLayout.post(new Runnable() {
+diff --git a/app/src/main/java/com/utd/radio/fragments/RadioFragment.java b/app/src/main/java/com/utd/radio/fragments/RadioFragment.java
+index b65542e..46537d8 100644
+--- a/app/src/main/java/com/utd/radio/fragments/RadioFragment.java
++++ b/app/src/main/java/com/utd/radio/fragments/RadioFragment.java
+@@ -12,47 +12,41 @@ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.ImageButton;
+-import android.widget.Toast;
++import android.widget.RelativeLayout;
++import android.widget.TextView;
+ 
++import com.github.rahatarmanahmed.cpv.CircularProgressView;
+ import com.utd.radio.R;
+ import com.utd.radio.RadioActivity;
+ import com.utd.radio.RadioService;
++import com.utd.radio.listeners.OnMetadataChangedListener;
++import com.utd.radio.models.Metadata;
++import com.utd.radio.util.MetadataManager;
+ 
+-/**
+- * A placeholder fragment containing a simple view.
+- */
+-public class RadioFragment extends Fragment {
+-
+-    /**
+-     * Returns a new instance of this fragment for the given section
+-     * number.
+-     */
++public class RadioFragment extends Fragment implements OnMetadataChangedListener, RadioService.OnStateChangeListener {
+ 
++    TextView artistTextView;
++    TextView songTextView;
+     ImageButton playPauseButton;
++    CircularProgressView loadingAnim;
+ 
++    RelativeLayout mainRadioLayout;
++    RelativeLayout disconnectedLayout;
+ 
+     RadioService radioService;
+     boolean isBound;
+ 
++    Metadata currentMetadata = new Metadata();
++
+     ServiceConnection serviceConnection = new ServiceConnection() {
+         @Override
+         public void onServiceConnected(ComponentName name, IBinder service) {
+             isBound = true;
+ 
+             RadioActivity.log("RadioFragment.onServiceConnected");
+-            Toast.makeText(RadioFragment.this.getActivity(), "binded to service yay", Toast.LENGTH_SHORT).show();
+             radioService = ((RadioService.RadioBinder) service).getService();
+-            playPauseButton.setImageDrawable(getResources().getDrawable(radioService.isPlaying() ? R.drawable.ic_action_pause : R.drawable.ic_action_play));
+-            playPauseButton.setEnabled(false);
+-            radioService.setOnReadyListener(new RadioService.OnReadyListener() {
+-                @Override
+-                public void onReady() {
+-                    playPauseButton.setEnabled(true);
+-                }
+-            });
+-
+-            if(!radioService.isReady())
+-                radioService.initMediaPlayer(false);
++            radioService.setOnStateChangeListener(RadioFragment.this);
++            onStateChange(radioService.getState());
+         }
+ 
+         @Override
+@@ -76,11 +70,14 @@ public class RadioFragment extends Fragment {
+                              Bundle savedInstanceState) {
+         isBound = false;
+         RadioActivity.log("RadioFragment.onCreateView");
+-        Intent intent = new Intent(getActivity(), RadioService.class);
+-        intent.setAction(RadioService.ACTION_INIT);getActivity().startService(intent);
+         View view = inflater.inflate(R.layout.fragment_radio, container, false);
+ 
++        mainRadioLayout = (RelativeLayout) view.findViewById(R.id.main_radio_layout);
++        disconnectedLayout = (RelativeLayout) view.findViewById(R.id.disconnected_layout);
+ 
++        songTextView = (TextView) view.findViewById(R.id.player_song);
++        artistTextView = (TextView) view.findViewById(R.id.player_artist);
++        loadingAnim = (CircularProgressView) view.findViewById((R.id.loading_anim));
+         playPauseButton = ((ImageButton)view.findViewById(R.id.playPauseButton));
+         playPauseButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -91,35 +88,47 @@ public class RadioFragment extends Fragment {
+                     if(radioService.isPlaying())
+                     {
+                         radioService.pause();
+-                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
++                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_light));
+                     }
+                     else
+                     {
+                         radioService.play();
+-                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
++                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_light));
+                     }
+                 }
+             }
+         });
+ 
++
+         return view;
+     }
+ 
++
+     @Override
+     public void onResume() {
+         super.onResume();
+         RadioActivity.log("RadioFragment.onResume");
++
+         Intent intent = new Intent(getActivity(), RadioService.class);
+-        getActivity().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
++        intent.setAction(RadioService.ACTION_INIT);
++        getActivity().startService(intent);
++
++        intent = new Intent(getActivity(), RadioService.class);
++        getActivity().getApplicationContext().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
++
++        MetadataManager.addListener(this);
++        MetadataManager.requestMetadata();
+     }
+ 
+     @Override
+     public void onPause() {
+         super.onPause();
+         RadioActivity.log("RadioFragment.onPause");
++        MetadataManager.removeListener(this);
+         if(isBound)
+         {
+-            getActivity().unbindService(serviceConnection);
++            getActivity().getApplicationContext().unbindService(serviceConnection);
++            radioService.setOnStateChangeListener(null);
+             isBound = false;
+         }
+     }
+@@ -132,4 +141,45 @@ public class RadioFragment extends Fragment {
+ //                getArguments().getInt(ARG_SECTION_NUMBER));
+         ((RadioActivity) activity).restoreActionBar(getString(R.string.app_name));
+     }
++
++    @Override
++    public void onMetadataChanged(Metadata metadata) {
++        currentMetadata = metadata;
++        songTextView.setText(metadata.song);
++        artistTextView.setText(metadata.artist);
++    }
++
++    @Override
++    public void onStateChange(RadioService.RadioState state) {
++        switch(state)
++        {
++            case CONNECTING:
++            case BUFFERING:
++                mainRadioLayout.setVisibility(View.VISIBLE);
++                disconnectedLayout.setVisibility(View.INVISIBLE);
++                playPauseButton.setEnabled(false);
++                loadingAnim.setVisibility(View.VISIBLE);
++                playPauseButton.setImageDrawable(null);
++                break;
++            case PAUSED:
++                mainRadioLayout.setVisibility(View.VISIBLE);
++                disconnectedLayout.setVisibility(View.INVISIBLE);
++                playPauseButton.setEnabled(true);
++                loadingAnim.setVisibility(View.INVISIBLE);
++                playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_light));
++                break;
++            case PLAYING:
++                mainRadioLayout.setVisibility(View.VISIBLE);
++                disconnectedLayout.setVisibility(View.INVISIBLE);
++                playPauseButton.setEnabled(true);
++                loadingAnim.setVisibility(View.INVISIBLE);
++                playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_light));
++                break;
++            case DISCONNECTED:
++                mainRadioLayout.setVisibility(View.INVISIBLE);
++                disconnectedLayout.setVisibility(View.VISIBLE);
++                playPauseButton.setEnabled(false);
++                break;
++        }
++    }
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/utd/radio/fragments/ShowsFragment.java b/app/src/main/java/com/utd/radio/fragments/ShowsFragment.java
+index e8f2047..6c0210f 100644
+--- a/app/src/main/java/com/utd/radio/fragments/ShowsFragment.java
++++ b/app/src/main/java/com/utd/radio/fragments/ShowsFragment.java
+@@ -19,25 +19,15 @@ import com.utd.radio.adapters.ThumbnailCardAdapter;
+  */
+ public class ShowsFragment extends Fragment {
+ 
+-    public static final String ARG_DAY = "ARG_DAY";
+ 
+-    private Day day;
+-
+-    private GridView gridView;
+     private ThumbnailCardAdapter cardAdapter;
+-
+-    public enum Day {
+-        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+-    }
++    private GridView gridView;
+ 
+     public ShowsFragment() {
+     }
+ 
+-    public static ShowsFragment newInstance(Day day) {
++     public static ShowsFragment newInstance() {
+         ShowsFragment fragment = new ShowsFragment();
+-        Bundle args = new Bundle();
+-        args.putInt(ARG_DAY, day.ordinal());
+-        fragment.setArguments(args);
+         return fragment;
+     }
+ 
+@@ -48,8 +38,59 @@ public class ShowsFragment extends Fragment {
+         cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+         cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+         cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+-        cardAdapter.addCard(new ThumbnailCard("Cria Cuervos", "6PM - 8PM", getResources().getDrawable(R.drawable.temp_album_art)));
+-        cardAdapter.addCard(new ThumbnailCard("Avant Lifestyles Guide", "8PM - 10PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Monday"));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Tuesday"));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
++        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+         gridView.setAdapter(cardAdapter);
+         return gridView;
+     }
+diff --git a/app/src/main/java/com/utd/radio/fragments/SocialFragment.java b/app/src/main/java/com/utd/radio/fragments/SocialFragment.java
+index 65bc653..3d0614b 100644
+--- a/app/src/main/java/com/utd/radio/fragments/SocialFragment.java
++++ b/app/src/main/java/com/utd/radio/fragments/SocialFragment.java
+@@ -1,12 +1,17 @@
+ package com.utd.radio.fragments;
+ 
+ import android.app.Activity;
++import android.app.AlertDialog;
++import android.content.Context;
++import android.content.Intent;
+ import android.net.Uri;
+ import android.os.Bundle;
+ import android.support.v4.app.Fragment;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.Button;
++import android.widget.Toast;
+ 
+ import com.utd.radio.R;
+ import com.utd.radio.RadioActivity;
+@@ -55,7 +60,67 @@ public class SocialFragment extends Fragment {
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         // Inflate the layout for this fragment
+-        return inflater.inflate(R.layout.fragment_social, container, false);
++        View rootview = inflater.inflate(R.layout.fragment_social, container, false);
++        Button callbutton = (Button)rootview.findViewById(R.id.buttonc);
++        callbutton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "9728836305 "));
++                startActivity(intent);
++            }
++        });
++
++        Button facebookbutton = (Button)rootview.findViewById(R.id.buttonf);
++        facebookbutton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Uri uri = Uri.parse("http://www.facebook.com/RadioUTD");
++                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
++                startActivity(intent);
++            }
++        });
++
++        Button twitterbutton = (Button)rootview.findViewById(R.id.buttont);
++        twitterbutton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Uri uri = Uri.parse("http://www.twitter.com/RadioUTD");
++                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
++                startActivity(intent);
++            }
++        });
++
++        Button instagrambutton = (Button)rootview.findViewById(R.id.buttoni);
++        instagrambutton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Uri uri = Uri.parse("https://instagram.com/RadioUTD/");
++                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
++                startActivity(intent);
++            }
++        });
++
++        Button rssbutton = (Button)rootview.findViewById(R.id.buttonr);
++        rssbutton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Uri uri = Uri.parse("http://www.radioutd.com/feed/");
++                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
++                startActivity(intent);
++            }
++        });
++
++        Button emailbutton = (Button)rootview.findViewById(R.id.buttone);
++        emailbutton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Uri uri = Uri.parse("mailto:stationmanager@radioutd.com");
++                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
++                startActivity(intent);
++            }
++        });
++
++        return rootview;
+     }
+ 
+     // TODO: Rename method, update argument and hook method into UI event
+@@ -77,6 +142,8 @@ public class SocialFragment extends Fragment {
+         mListener = null;
+     }
+ 
++
++
+     /**
+      * This interface must be implemented by activities that contain this
+      * fragment to allow an interaction in this fragment to be communicated
+@@ -92,4 +159,5 @@ public class SocialFragment extends Fragment {
+         public void onFragmentInteraction(Uri uri);
+     }
+ 
++
+ }
+diff --git a/app/src/main/java/com/utd/radio/models/ThumbnailCard.java b/app/src/main/java/com/utd/radio/models/ThumbnailCard.java
+index 316ff82..95f803f 100644
+--- a/app/src/main/java/com/utd/radio/models/ThumbnailCard.java
++++ b/app/src/main/java/com/utd/radio/models/ThumbnailCard.java
+@@ -7,8 +7,13 @@ import android.graphics.drawable.Drawable;
+  */
+ public class ThumbnailCard {
+     private Drawable thumbnail;
+-    private String title;
+-    private String subtitle;
++    private String title = "";
++    private String subtitle = "";
++
++    public ThumbnailCard(String title)
++    {
++        this.title = title;
++    }
+ 
+     public ThumbnailCard(String title, String subtitle, Drawable thumbnail)
+     {
+diff --git a/app/src/main/java/com/utd/radio/util/NaivePlsParser.java b/app/src/main/java/com/utd/radio/util/NaivePlsParser.java
+index 977f4bb..6f0c027 100644
+--- a/app/src/main/java/com/utd/radio/util/NaivePlsParser.java
++++ b/app/src/main/java/com/utd/radio/util/NaivePlsParser.java
+@@ -1,5 +1,7 @@
+ package com.utd.radio.util;
+ 
++import com.utd.radio.models.Metadata;
++
+ import java.io.BufferedReader;
+ import java.io.IOException;
+ import java.io.InputStream;
+diff --git a/app/src/main/res/drawable-hdpi/ic_action_pause.png b/app/src/main/res/drawable-hdpi/ic_action_pause.png
+deleted file mode 100644
+index d30ba3c..0000000
+Binary files a/app/src/main/res/drawable-hdpi/ic_action_pause.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-hdpi/ic_action_play.png b/app/src/main/res/drawable-hdpi/ic_action_play.png
+deleted file mode 100644
+index 869f001..0000000
+Binary files a/app/src/main/res/drawable-hdpi/ic_action_play.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-hdpi/ic_launcher.png b/app/src/main/res/drawable-hdpi/ic_launcher.png
+index 96a442e..a4cdf70 100644
+Binary files a/app/src/main/res/drawable-hdpi/ic_launcher.png and b/app/src/main/res/drawable-hdpi/ic_launcher.png differ
+diff --git a/app/src/main/res/drawable-mdpi/ic_action_pause.png b/app/src/main/res/drawable-mdpi/ic_action_pause.png
+deleted file mode 100644
+index 2c96c7b..0000000
+Binary files a/app/src/main/res/drawable-mdpi/ic_action_pause.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-mdpi/ic_action_play.png b/app/src/main/res/drawable-mdpi/ic_action_play.png
+deleted file mode 100644
+index 5f3bf86..0000000
+Binary files a/app/src/main/res/drawable-mdpi/ic_action_play.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-mdpi/ic_launcher.png b/app/src/main/res/drawable-mdpi/ic_launcher.png
+index 359047d..1b8f3c4 100644
+Binary files a/app/src/main/res/drawable-mdpi/ic_launcher.png and b/app/src/main/res/drawable-mdpi/ic_launcher.png differ
+diff --git a/app/src/main/res/drawable-xhdpi/ic_action_pause.png b/app/src/main/res/drawable-xhdpi/ic_action_pause.png
+deleted file mode 100644
+index 504389a..0000000
+Binary files a/app/src/main/res/drawable-xhdpi/ic_action_pause.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-xhdpi/ic_action_play.png b/app/src/main/res/drawable-xhdpi/ic_action_play.png
+deleted file mode 100644
+index 7f709bb..0000000
+Binary files a/app/src/main/res/drawable-xhdpi/ic_action_play.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-xhdpi/ic_launcher.png b/app/src/main/res/drawable-xhdpi/ic_launcher.png
+index 71c6d76..b0ebc77 100644
+Binary files a/app/src/main/res/drawable-xhdpi/ic_launcher.png and b/app/src/main/res/drawable-xhdpi/ic_launcher.png differ
+diff --git a/app/src/main/res/drawable-xxhdpi/ic_action_pause.png b/app/src/main/res/drawable-xxhdpi/ic_action_pause.png
+deleted file mode 100644
+index c3b376a..0000000
+Binary files a/app/src/main/res/drawable-xxhdpi/ic_action_pause.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-xxhdpi/ic_action_play.png b/app/src/main/res/drawable-xxhdpi/ic_action_play.png
+deleted file mode 100644
+index df59947..0000000
+Binary files a/app/src/main/res/drawable-xxhdpi/ic_action_play.png and /dev/null differ
+diff --git a/app/src/main/res/drawable-xxhdpi/ic_launcher.png b/app/src/main/res/drawable-xxhdpi/ic_launcher.png
+index 4df1894..d41e829 100644
+Binary files a/app/src/main/res/drawable-xxhdpi/ic_launcher.png and b/app/src/main/res/drawable-xxhdpi/ic_launcher.png differ
+diff --git a/app/src/main/res/drawable/nav_list_item_bg.xml b/app/src/main/res/drawable/nav_list_item_bg.xml
+index 8adc45d..2e92435 100644
+--- a/app/src/main/res/drawable/nav_list_item_bg.xml
++++ b/app/src/main/res/drawable/nav_list_item_bg.xml
+@@ -1,6 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ 
+ <selector xmlns:android="http://schemas.android.com/apk/res/android">
++    <item android:state_pressed="true" android:drawable="@color/nav_list_item_bg_pressed"></item>
+     <item android:state_activated="true" android:drawable="@color/nav_list_item_bg_selected"></item>
+     <item android:state_checked="true" android:drawable="@color/nav_list_item_bg_selected"></item>
+     <item android:drawable="@color/nav_list_item_bg"></item>
+diff --git a/app/src/main/res/layout/activity_radio.xml b/app/src/main/res/layout/activity_radio.xml
+index caa4396..9fce1c6 100644
+--- a/app/src/main/res/layout/activity_radio.xml
++++ b/app/src/main/res/layout/activity_radio.xml
+@@ -1,31 +1,60 @@
+-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+-<android.support.v4.widget.DrawerLayout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/drawer_layout"
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    tools:context=".RadioActivity">
++    android:orientation="vertical">
+ 
+-    <!-- As the main content view, the view below consumes the entire
+-         space available using match_parent in both dimensions. -->
+-    <FrameLayout
+-        android:id="@+id/container"
++    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
++        xmlns:app="http://schemas.android.com/apk/res-auto"
++        android:id="@+id/toolbar"
++        android:layout_width="fill_parent"
++        android:layout_height="wrap_content"
++        android:background="@color/transparentActionBar"
++        android:minHeight="?attr/actionBarSize"
++        app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
++
++    <!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
++    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
++        xmlns:tools="http://schemas.android.com/tools"
++        android:id="@+id/drawer_layout"
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent" />
+-
+-    <!-- android:layout_gravity="start" tells DrawerLayout to treat
+-         this as a sliding drawer on the left side for left-to-right
+-         languages and on the right side for right-to-left languages.
+-         If you're not building against API 17 or higher, use
+-         android:layout_gravity="left" instead. -->
+-    <!-- The drawer is given a fixed width in dp and extends the full height of
+-         the container. -->
+-    <fragment android:id="@+id/navigation_drawer"
+-        android:layout_width="@dimen/navigation_drawer_width"
+         android:layout_height="match_parent"
+-        android:layout_gravity="start"
+-        android:name="com.utd.radio.fragments.NavigationDrawerFragment"
+-        tools:layout="@layout/fragment_navigation_drawer" />
++        tools:context=".RadioActivity">
++
++        <!-- As the main content view, the view below consumes the entire
++             space available using match_parent in both dimensions. -->
++        <RelativeLayout
++            android:layout_width="match_parent"
++            android:layout_height="match_parent">
++
++            <FrameLayout
++                android:id="@+id/container"
++                android:layout_width="match_parent"
++                android:layout_height="match_parent" />
++
++            <View
++                android:layout_width="match_parent"
++                android:layout_height="5dp"
++                android:layout_alignParentTop="true"
++                android:background="@drawable/player_bar_shadow"
++                android:rotation="180"></View>
++        </RelativeLayout>
++
++
++        <!-- android:layout_gravity="start" tells DrawerLayout to treat
++             this as a sliding drawer on the left side for left-to-right
++             languages and on the right side for right-to-left languages.
++             If you're not building against API 17 or higher, use
++             android:layout_gravity="left" instead. -->
++        <!-- The drawer is given a fixed width in dp and extends the full height of
++             the container. -->
++        <fragment
++            android:id="@+id/navigation_drawer"
++            android:name="com.utd.radio.fragments.NavigationDrawerFragment"
++            android:layout_width="@dimen/navigation_drawer_width"
++            android:layout_height="match_parent"
++            android:layout_gravity="start"
++            tools:layout="@layout/fragment_navigation_drawer" />
++
++    </android.support.v4.widget.DrawerLayout>
+ 
+-</android.support.v4.widget.DrawerLayout>
++</LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/fragment_navigation_drawer.xml b/app/src/main/res/layout/fragment_navigation_drawer.xml
+index d82ff4a..7f94ce9 100644
+--- a/app/src/main/res/layout/fragment_navigation_drawer.xml
++++ b/app/src/main/res/layout/fragment_navigation_drawer.xml
+@@ -1,9 +1,10 @@
+ <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+-    style="@style/AppTheme.NavDrawer"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:choiceMode="singleChoice"
+     android:divider="@android:color/transparent"
+     android:dividerHeight="0dp"
+-    tools:context=".NavigationDrawerFragment" />
++    tools:context=".NavigationDrawerFragment"
++    style="@style/AppTheme.NavDrawer"
++    />
+diff --git a/app/src/main/res/layout/fragment_radio.xml b/app/src/main/res/layout/fragment_radio.xml
+index 03534cf..4eba3b1 100644
+--- a/app/src/main/res/layout/fragment_radio.xml
++++ b/app/src/main/res/layout/fragment_radio.xml
+@@ -1,19 +1,157 @@
+-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:paddingLeft="@dimen/activity_horizontal_margin"
+-    android:paddingRight="@dimen/activity_horizontal_margin"
+-    android:paddingTop="@dimen/activity_vertical_margin"
+-    android:paddingBottom="@dimen/activity_vertical_margin" >
+-
+-
+-    <ImageButton
+-        android:layout_width="200dp"
+-        android:layout_height="200dp"
+-        android:id="@+id/playPauseButton"
+-        android:scaleType="centerCrop"
+-        android:layout_centerVertical="true"
+-        android:layout_centerHorizontal="true"
+-        android:src="@drawable/ic_action_play" />
+-</RelativeLayout>
++    android:layout_height="match_parent">
++
++    <!-- Main layout -->
++    <RelativeLayout
++        android:id="@+id/main_radio_layout"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:clipChildren="false"
++        android:orientation="vertical">
++
++        <LinearLayout
++            android:id="@+id/player_bottom_bar"
++            style="@style/PlayerBar"
++            android:layout_width="match_parent"
++            android:layout_height="76dp"
++            android:layout_alignParentBottom="true"
++            android:layout_weight="1"
++            android:orientation="vertical"
++            android:paddingLeft="16dp"
++            android:paddingTop="8dp">
++
++            <TextView
++                android:id="@+id/player_song"
++                style="@style/TextPrimary.Large"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:ellipsize="marquee"
++                android:fadingEdge="horizontal"
++                android:paddingRight="80dp"
++                android:singleLine="true"
++                tools:text="Sandstorm" />
++
++            <TextView
++                android:id="@+id/player_artist"
++                style="@style/TextSecondary.Large"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:ellipsize="marquee"
++                android:fadingEdge="horizontal"
++                android:singleLine="true"
++                tools:text="Darude ft. Skrillex" />
++        </LinearLayout>
++
++        <ImageView
++            android:id="@+id/largeAlbumArt"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            android:layout_above="@id/player_bottom_bar"
++            android:scaleType="centerCrop"
++            android:src="@drawable/temp_album_art" />
++
++        <View
++            android:layout_width="match_parent"
++            android:layout_height="128dp"
++            android:layout_above="@id/player_bottom_bar"
++            android:background="@drawable/scrim"></View>
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_above="@id/player_bottom_bar"
++            android:orientation="vertical"
++            android:paddingBottom="16dp"
++            android:paddingLeft="16dp">
++
++            <TextView
++                android:id="@+id/show_name"
++                style="@style/PlayerShowTitleText"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:ellipsize="marquee"
++                android:fadingEdge="horizontal"
++                android:singleLine="true"
++                android:text="Camping Out" />
++
++            <TextView
++                android:id="@+id/show_dj"
++                style="@style/PlayerShowDJText"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:ellipsize="marquee"
++                android:fadingEdge="horizontal"
++                android:singleLine="true"
++                android:text="With Camps" />
++        </LinearLayout>
++
++        <FrameLayout
++            style="@style/FABPaddingFix"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_alignParentRight="true"
++            android:layout_alignTop="@id/player_bottom_bar"
++            android:layout_marginRight="16dp"
++            android:clipChildren="false">
++
++            <com.melnykov.fab.FloatingActionButton xmlns:fab="http://schemas.android.com/apk/res-auto"
++                android:id="@+id/playPauseButton"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_gravity="center"
++                android:src="@drawable/ic_play_arrow_light"
++                fab:fab_colorNormal="@color/colorPrimary"
++                fab:fab_colorPressed="@color/colorPrimaryDark" />
++
++            <com.github.rahatarmanahmed.cpv.CircularProgressView xmlns:cpv="http://schemas.android.com/apk/res-auto"
++                android:id="@+id/loading_anim"
++                android:layout_width="24dp"
++                android:layout_height="24dp"
++                android:layout_gravity="center"
++                android:elevation="@dimen/fab_elevation_lollipop"
++                cpv:cpv_color="#FFF"
++                cpv:cpv_indeterminate="true"
++                cpv:cpv_thickness="3dp" />
++        </FrameLayout>
++
++    </RelativeLayout>
++
++    <!-- Disconnected Message Layout -->
++    <RelativeLayout
++        android:id="@+id/disconnected_layout"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:visibility="invisible">
++
++        <LinearLayout
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_centerInParent="true"
++            android:orientation="vertical">
++
++            <ImageView
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_gravity="center_horizontal"
++                android:src="@drawable/emoticon_sad"></ImageView>
++
++            <TextView
++                style="@style/TextPrimary.Large"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_gravity="center_horizontal"
++                android:text="@string/disconnect_msg_title" />
++
++            <TextView
++                style="@style/TextSecondary.Large"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_gravity="center_horizontal"
++                android:text="@string/disconnect_msg_text" />
++
++        </LinearLayout>
++    </RelativeLayout>
++
++</FrameLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/fragment_shows.xml b/app/src/main/res/layout/fragment_shows.xml
+index cd156b5..fcd5e56 100644
+--- a/app/src/main/res/layout/fragment_shows.xml
++++ b/app/src/main/res/layout/fragment_shows.xml
+@@ -1,6 +1,12 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ 
+-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+-    style="@style/ThumbnailCardGrid"
+-    >
+-</GridView>
++    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
++        style="@style/ThumbnailCardGrid"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:clipToPadding="false"
++        android:horizontalSpacing="8dp"
++        android:padding="8dp"
++        android:scrollbarStyle="outsideOverlay"
++        android:stretchMode="columnWidth"
++        android:verticalSpacing="8dp"></GridView>
+diff --git a/app/src/main/res/layout/fragment_social.xml b/app/src/main/res/layout/fragment_social.xml
+index 6e12d19..351255d 100644
+--- a/app/src/main/res/layout/fragment_social.xml
++++ b/app/src/main/res/layout/fragment_social.xml
+@@ -5,9 +5,93 @@
+     tools:context="com.utd.radio.fragments.SocialFragment">
+ 
+     <!-- TODO: Update blank fragment layout -->
+-    <TextView
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:text="@string/hello_blank_fragment" />
+ 
++
++    <ScrollView android:layout_height="fill_parent"
++        android:layout_width="fill_parent">
++        <LinearLayout
++        android:orientation="vertical"
++        android:layout_width="fill_parent"
++        android:layout_height="fill_parent"
++        android:gravity="bottom">
++
++            <ImageView
++                android:layout_width="256dp"
++                android:layout_height="200dp"
++                android:id="@+id/imageView"
++                android:layout_gravity="center_horizontal"
++                android:src="@drawable/logo"
++                android:layout_margin="10dp" />
++
++            <Button
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="Call In"
++            android:id="@+id/buttonc"
++            android:drawableLeft="@drawable/ic_phone_white_24dp"
++            android:layout_gravity="center_horizontal"
++            style="@style/PlayerButton" />
++        <Button
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="Facebook"
++            android:id="@+id/buttonf"
++            android:drawableLeft="@drawable/ic_facebook_box_white_24dp"
++            android:layout_gravity="center_horizontal"
++            style="@style/PlayerButton" />
++        <Button
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="Twitter"
++            android:id="@+id/buttont"
++            android:drawableLeft="@drawable/ic_twitter_box_white_24dp"
++            android:layout_gravity="center_horizontal"
++            style="@style/PlayerButton" />
++        <Button
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="Instagram"
++            android:id="@+id/buttoni"
++            android:drawableLeft="@drawable/ic_instagram_white_24dp"
++            android:layout_gravity="center_horizontal"
++            style="@style/PlayerButton" />
++
++        <Button
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="E-Mail"
++            android:id="@+id/buttone"
++            android:drawableLeft="@drawable/ic_email_white_24dp"
++            android:layout_gravity="center_horizontal"
++            style="@style/PlayerButton" />
++
++        <Button
++            android:layout_width="fill_parent"
++            android:layout_height="wrap_content"
++            android:text="RSS"
++            android:id="@+id/buttonr"
++            android:drawableLeft="@drawable/ic_rss_box_white_24dp"
++            android:layout_gravity="center_horizontal"
++            style="@style/PlayerButton" />
++
++        <LinearLayout
++            android:orientation="horizontal"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_gravity="center_horizontal"
++            android:gravity="center">
++
++        </LinearLayout>
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Radio UTD Android application created by Rahat Ahmed"
++            android:id="@+id/textView"
++            android:layout_gravity="center_horizontal"
++            style="@style/TextPrimary"
++            android:gravity="center"
++            android:padding="8dp" />
++        </LinearLayout>
++</ScrollView>
+ </FrameLayout>
+diff --git a/app/src/main/res/layout/navigation_drawer_item.xml b/app/src/main/res/layout/navigation_drawer_item.xml
+index 641e7b2..ca5d979 100644
+--- a/app/src/main/res/layout/navigation_drawer_item.xml
++++ b/app/src/main/res/layout/navigation_drawer_item.xml
+@@ -3,8 +3,13 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/nav_drawer_item_label"
+     style="@style/AppTheme.NavDrawer.Item"
+-    tools:text="List Item"
+-    >
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:gravity="center_vertical"
++    android:paddingBottom="15dp"
++    android:paddingLeft="15dp"
++    android:paddingTop="15dp"
++    tools:text="List Item">
+ 
+ </TextView>
+ 
+diff --git a/app/src/main/res/layout/thumbnail_card.xml b/app/src/main/res/layout/thumbnail_card.xml
+index 46fae03..07bc9ec 100644
+--- a/app/src/main/res/layout/thumbnail_card.xml
++++ b/app/src/main/res/layout/thumbnail_card.xml
+@@ -1,41 +1,53 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ 
+-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:orientation="vertical" android:layout_width="match_parent"
+-    android:layout_height="wrap_content"
+-    android:background="@drawable/card_background"
+-    >
+-
+-    <ImageView
+-        android:id="@+id/show_card_image"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:scaleType="fitStart"
+-        android:adjustViewBounds="true"
+-        android:src="@drawable/temp_album_art" />
+-
+-    <LinearLayout
+-        android:id="@+id/show_card_text"
+-        android:orientation="vertical"
++<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:card_view="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content">
++
++    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+         android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        >
++        android:layout_height="wrap_content">
+ 
+-        <TextView
++        <ImageView
++            android:id="@+id/show_card_image"
+             android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:text="Camping Out with Camps"
+-            style="@style/ThumbnailCard.Title"
+-            android:id="@+id/show_card_title" />
++            android:layout_height="120dp"
++            android:adjustViewBounds="true"
++            android:src="@drawable/temp_album_art"
++            android:scaleType="fitStart" />
+ 
+-        <TextView
+-            android:layout_width="wrap_content"
++        <LinearLayout
++            android:id="@+id/show_card_text"
++            android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            style="@style/ThumbnailCard.Subtitle"
+-            android:text="12PM - 2PM"
+-            android:id="@+id/show_card_subtitle" />
++            android:orientation="vertical">
++
++            <TextView
++                android:id="@+id/show_card_title"
++                style="@style/TextPrimary.Large"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_marginLeft="8dp"
++                android:layout_marginRight="8dp"
++                android:layout_marginTop="4dp"
++                android:ellipsize="end"
++                android:singleLine="true"
++                android:text="Camping Out with Camps" />
++
++            <TextView
++                android:id="@+id/show_card_subtitle"
++                style="@style/TextPrimary"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_marginBottom="8dp"
++                android:layout_marginLeft="8dp"
++                android:layout_marginRight="8dp"
++                android:singleLine="true"
++                android:text="12PM - 2PM" />
++
++        </LinearLayout>
+ 
+     </LinearLayout>
+ 
+-</LinearLayout
+-    >
+\ No newline at end of file
++</android.support.v7.widget.CardView>
+\ No newline at end of file
+diff --git a/app/src/main/res/values-land/styles.xml b/app/src/main/res/values-land/styles.xml
+index 10f092e..d89b6cf 100644
+--- a/app/src/main/res/values-land/styles.xml
++++ b/app/src/main/res/values-land/styles.xml
+@@ -4,7 +4,7 @@
+     <style name="ThumbnailCardGrid">
+         <item name="android:layout_width">match_parent</item>
+         <item name="android:layout_height">match_parent</item>
+-        <item name="android:numColumns">3</item>
++        <item name="android:numColumns">2</item>
+         <item name="android:stretchMode">columnWidth</item>
+         <item name="android:padding">8dp</item>
+         <item name="android:clipToPadding">false</item>
+diff --git a/app/src/main/res/values-v11/styles.xml b/app/src/main/res/values-v11/styles.xml
+deleted file mode 100644
+index 74b42b7..0000000
+--- a/app/src/main/res/values-v11/styles.xml
++++ /dev/null
+@@ -1,9 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-
+-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+-        <item name="android:windowBackground">@color/main_bg</item>
+-        <item name="android:actionBarStyle">@style/ActionBar</item>
+-    </style>
+-
+-</resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values-v16/styles.xml b/app/src/main/res/values-v16/styles.xml
+index 5d59a0f..7dae0ee 100644
+--- a/app/src/main/res/values-v16/styles.xml
++++ b/app/src/main/res/values-v16/styles.xml
+@@ -1,15 +1,21 @@
+ <resources>
+ 
+-    <style name="ThumbnailCard.Title">
+-        <item name="android:singleLine">true</item>
+-        <item name="android:ellipsize">end</item>
+-        <item name="android:fontFamily">sans-serif-light</item>
+-        <item name="android:textSize">16sp</item>
+-        <item name="android:layout_marginTop">4dp</item>
+-        <item name="android:layout_marginLeft">8dp</item>
+-        <item name="android:layout_marginRight">8dp</item>
+-        <!--<item name="android:background">#0000</item>-->
++    <style name="TextPrimary">
+         <item name="android:textColor">@color/primary_text_color</item>
++        <item name="android:textSize">16sp</item>
++        <item name="android:fontFamily">sans-serif-light</item>
++    </style>
++
++    <style name="TextSecondary">
++        <item name="android:textColor">@color/secondary_text_color</item>
++        <item name="android:textSize">12sp</item>
++        <item name="android:fontFamily">sans-serif-light</item>
++    </style>
++
++    <style name="PlayerShowDJText">
++        <item name="android:textColor">@color/secondary_text_color_inverse</item>
++        <item name="android:textSize">20sp</item>
++        <item name="android:fontFamily">sans-serif-light</item>
+     </style>
+ 
+ </resources>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index b2584b5..42d4a47 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -9,6 +9,9 @@
+     <string name="navigation_drawer_close">Close navigation drawer</string>
+     <string name="action_example">Example action</string>
+     <string name="action_settings">Settings</string>
+-    <string name="hello_blank_fragment">Hello blank fragment</string>
++    <string name="current_show">Loading...</string>
++    <string name="current_playing">Loading...</string>
++    <string name="disconnect_msg_title">Aw geez!</string>
++    <string name="disconnect_msg_text">I can\'t find the internet</string>
+ 
+ </resources>
+diff --git a/app/src/main/res/values/styles.xml b/app/src/main/res/values/styles.xml
+index 61f7b37..ae3017d 100644
+--- a/app/src/main/res/values/styles.xml
++++ b/app/src/main/res/values/styles.xml
+@@ -1,85 +1,89 @@
+ <resources>
+ 
+-    <color name="card_shadow">#14000000</color>
+-    <color name="card_color">#FFF</color>
+-
+-    <color name="main_bg">#EEE</color>
+-    <color name="nav_list_item_bg">#FFF</color>
+-    <color name="nav_list_bg">#FFF</color>
+-    <!--<color name="nav_list_item_bg_pressed">#DDD</color>-->
+-    <color name="nav_list_item_bg_selected">#EEE</color>
+-
+-    <color name="primary_text_color">#555</color>
+-    <color name="secondary_text_color">#999</color>
+-    <color name="tertiary_text_color">#B5B5B5</color>
+-
+-    <color name="action_bar_color">#E98300</color>
+-
+     <!-- Base application theme. -->
+-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
++    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+         <!-- Customize your theme here. -->
+-        <item name="android:windowBackground">@color/main_bg</item>
+-        <item name="actionBarStyle">@style/ActionBar</item>
++        <item name="android:windowBackground">@color/windowBackground</item>
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++        <item name="colorAccent">@color/colorAccent</item>
++        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+     </style>
+ 
+-    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+-        <item name="android:background">@color/action_bar_color</item>
+-        <item name="background">@color/action_bar_color</item>
++    <!-- Enables spinny burger-arrow nav drawer icon -->
++    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
++        <item name="spinBars">true</item>
++        <item name="color">@android:color/white</item>
+     </style>
+ 
+     <style name="AppTheme.NavDrawer">
+         <item name="android:background">@color/nav_list_bg</item>
+     </style>
++
+     <style name="AppTheme.NavDrawer.Item">
+-        <item name="android:layout_width">match_parent</item>
+-        <item name="android:layout_height">wrap_content</item>
+-        <item name="android:gravity">center_vertical</item>
+         <item name="android:textSize">20sp</item>
+-        <item name="android:paddingTop">15dp</item>
+-        <item name="android:paddingBottom">15dp</item>
+-        <item name="android:paddingLeft">15dp</item>
+         <item name="android:background">@drawable/nav_list_item_bg</item>
+         <item name="android:textColor">@color/primary_text_color</item>
+     </style>
+ 
+-    <style name="ThumbnailCard">
+-        <!--<item name="orientation">vertical</item>-->
+-        <!--<item name="android:layout_width">match_parent</item>-->
+-        <!--<item name="android:layout_height">wrap_content</item>-->
+-        <!--<item name="android:background">@drawable/card_background</item>-->
++    <!-- TODO: Change this on larger layouts like landscape -->
++    <style name="ThumbnailCardGrid">
++        <item name="android:numColumns">1</item>
+     </style>
+-    <style name="ThumbnailCard.Title">
+-        <item name="android:singleLine">true</item>
+-        <item name="android:ellipsize">end</item>
+-        <item name="android:textSize">16sp</item>
+-        <item name="android:layout_marginTop">4dp</item>
+-        <item name="android:layout_marginLeft">8dp</item>
+-        <item name="android:layout_marginRight">8dp</item>
+-        <!--<item name="android:background">#0000</item>-->
++
++    <style name="PlayerBar">
++        <item name="android:background">@color/player_main_color</item>
++    </style>
++
++    <style name="PlayerButton">
++        <item name="android:background">@color/colorPrimary</item>
++        <item name="android:paddingLeft">10dp</item>
++        <item name="android:layout_margin">5dp</item>
++    </style>
++
++    <style name="NotificationTextPrimary" parent="android:TextAppearance.StatusBar.EventContent.Title"></style>
++
++    <style name="NotificationTextSecondary" parent="android:TextAppearance.StatusBar.EventContent"></style>
++
++    <style name="TextPrimary">
+         <item name="android:textColor">@color/primary_text_color</item>
++        <item name="android:textSize">16sp</item>
+     </style>
+ 
+-    <style name="ThumbnailCard.Subtitle">
+-        <item name="android:singleLine">true</item>
++    <style name="TextSecondary">
++        <item name="android:textColor">@color/secondary_text_color</item>
+         <item name="android:textSize">12sp</item>
+-        <item name="android:layout_marginTop">0dp</item>
+-        <item name="android:layout_marginLeft">8dp</item>
+-        <item name="android:layout_marginRight">8dp</item>
+-        <item name="android:layout_marginBottom">8dp</item>
+-        <!--<item name="android:background">#0000</item>-->
++    </style>
++
++    <style name="TextTertiary">
+         <item name="android:textColor">@color/tertiary_text_color</item>
++        <item name="android:textSize">12sp</item>
+     </style>
+ 
+-    <style name="ThumbnailCardGrid">
+-        <item name="android:layout_width">match_parent</item>
+-        <item name="android:layout_height">match_parent</item>
+-        <item name="android:numColumns">2</item>
+-        <item name="android:stretchMode">columnWidth</item>
+-        <item name="android:padding">8dp</item>
+-        <item name="android:clipToPadding">false</item>
+-        <item name="android:verticalSpacing">8dp</item>
+-        <item name="android:horizontalSpacing">8dp</item>
+-        <item name="android:scrollbarStyle">outsideOverlay</item>
++    <style name="TextPrimary.Large" parent="TextPrimary">
++        <item name="android:textSize">24sp</item>
++    </style>
++
++    <style name="TextSecondary.Large" parent="TextSecondary">
++        <item name="android:textSize">16sp</item>
++    </style>
++
++    <style name="TextTertiary.Large" parent="TextTertiary">
++        <item name="android:textSize">16sp</item>
++    </style>
++
++    <style name="PlayerShowTitleText">
++        <item name="android:textColor">@color/primary_text_color_inverse</item>
++        <item name="android:textSize">34sp</item>
++    </style>
++
++    <style name="PlayerShowDJText">
++        <item name="android:textColor">@color/secondary_text_color_inverse</item>
++        <item name="android:textSize">20sp</item>
++    </style>
++
++    <style name="FABPaddingFix">
++        <item name="android:layout_marginTop">-36dp</item>
+     </style>
+ 
+ </resources>
+diff --git a/build.gradle b/build.gradle
+index 9b8abe4..d3ff69d 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -5,7 +5,7 @@ buildscript {
+         jcenter()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:0.12.2'
++        classpath 'com.android.tools.build:gradle:1.1.0'
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files
+diff --git a/gradle/wrapper/gradle-wrapper.properties b/gradle/wrapper/gradle-wrapper.properties
+index 1e61d1f..454053c 100644
+--- a/gradle/wrapper/gradle-wrapper.properties
++++ b/gradle/wrapper/gradle-wrapper.properties
+@@ -1,6 +1,6 @@
+-#Wed Apr 10 15:27:10 PDT 2013
++#Sat Mar 21 13:28:00 CDT 2015
+ distributionBase=GRADLE_USER_HOME
+ distributionPath=wrapper/dists
+ zipStoreBase=GRADLE_USER_HOME
+ zipStorePath=wrapper/dists
+-distributionUrl=http\://services.gradle.org/distributions/gradle-1.12-all.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-2.2.1-all.zip

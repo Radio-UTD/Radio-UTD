@@ -7,8 +7,13 @@ import android.graphics.drawable.Drawable;
  */
 public class ThumbnailCard {
     private Drawable thumbnail;
-    private String title;
-    private String subtitle;
+    private String title = "";
+    private String subtitle = "";
+
+    public ThumbnailCard(String title)
+    {
+        this.title = title;
+    }
 
     public ThumbnailCard(String title, String subtitle, Drawable thumbnail)
     {

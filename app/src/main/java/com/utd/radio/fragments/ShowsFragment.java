@@ -19,25 +19,15 @@ import com.utd.radio.adapters.ThumbnailCardAdapter;
  */
 public class ShowsFragment extends Fragment {
 
-    public static final String ARG_DAY = "ARG_DAY";
 
-    private Day day;
-
-    private GridView gridView;
     private ThumbnailCardAdapter cardAdapter;
-
-    public enum Day {
-        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
-    }
+    private GridView gridView;
 
     public ShowsFragment() {
     }
 
-    public static ShowsFragment newInstance(Day day) {
+     public static ShowsFragment newInstance() {
         ShowsFragment fragment = new ShowsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_DAY, day.ordinal());
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -48,8 +38,59 @@ public class ShowsFragment extends Fragment {
         cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
         cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
         cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
-        cardAdapter.addCard(new ThumbnailCard("Cria Cuervos", "6PM - 8PM", getResources().getDrawable(R.drawable.temp_album_art)));
-        cardAdapter.addCard(new ThumbnailCard("Avant Lifestyles Guide", "8PM - 10PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Monday"));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Tuesday"));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Camping Out", "12PM - 2PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("Mumbletown", "2PM - 4PM", getResources().getDrawable(R.drawable.temp_album_art)));
+        cardAdapter.addCard(new ThumbnailCard("8-bit Jukebox", "4PM - 6PM", getResources().getDrawable(R.drawable.temp_album_art)));
         gridView.setAdapter(cardAdapter);
         return gridView;
     }

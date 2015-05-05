@@ -1,0 +1,9 @@
+<resources>
+    <style name="NotificationTextPrimary" parent="android:TextAppearance.Material.Notification.Title"></style>
+    <style name="NotificationTextSecondary" parent="android:TextAppearance.Material.Notification"></style>
+
+    <!-- Because Lollipop decided to stop using padding for some god damn reason -->
+    <style name="FABPaddingFix">
+        <item name="android:layout_marginTop">-28dp</item>
+    </style>
+</resources>

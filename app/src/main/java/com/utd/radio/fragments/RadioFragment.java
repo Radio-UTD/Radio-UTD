@@ -12,27 +12,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.utd.radio.R;
 import com.utd.radio.RadioActivity;
 import com.utd.radio.RadioService;
+import com.utd.radio.listeners.OnMetadataChangedListener;
+import com.utd.radio.models.Metadata;
+import com.utd.radio.util.MetadataManager;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class RadioFragment extends Fragment {
+public class RadioFragment extends Fragment implements OnMetadataChangedListener, RadioService.OnStateChangeListener {
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-
+    TextView artistTextView;
+    TextView songTextView;
     ImageButton playPauseButton;
+    CircularProgressView loadingAnim;
 
+    RelativeLayout mainRadioLayout;
+    RelativeLayout disconnectedLayout;
 
     RadioService radioService;
     boolean isBound;
+
+    Metadata currentMetadata = new Metadata();
 
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -40,19 +44,9 @@ public class RadioFragment extends Fragment {
             isBound = true;
 
             RadioActivity.log("RadioFragment.onServiceConnected");
-            Toast.makeText(RadioFragment.this.getActivity(), "binded to service yay", Toast.LENGTH_SHORT).show();
             radioService = ((RadioService.RadioBinder) service).getService();
-            playPauseButton.setImageDrawable(getResources().getDrawable(radioService.isPlaying() ? R.drawable.ic_action_pause : R.drawable.ic_action_play));
-            playPauseButton.setEnabled(false);
-            radioService.setOnReadyListener(new RadioService.OnReadyListener() {
-                @Override
-                public void onReady() {
-                    playPauseButton.setEnabled(true);
-                }
-            });
-
-            if(!radioService.isReady())
-                radioService.initMediaPlayer(false);
+            radioService.setOnStateChangeListener(RadioFragment.this);
+            onStateChange(radioService.getState());
         }
 
         @Override
@@ -76,11 +70,14 @@ public class RadioFragment extends Fragment {
                              Bundle savedInstanceState) {
         isBound = false;
         RadioActivity.log("RadioFragment.onCreateView");
-        Intent intent = new Intent(getActivity(), RadioService.class);
-        intent.setAction(RadioService.ACTION_INIT);getActivity().startService(intent);
         View view = inflater.inflate(R.layout.fragment_radio, container, false);
 
+        mainRadioLayout = (RelativeLayout) view.findViewById(R.id.main_radio_layout);
+        disconnectedLayout = (RelativeLayout) view.findViewById(R.id.disconnected_layout);
 
+        songTextView = (TextView) view.findViewById(R.id.player_song);
+        artistTextView = (TextView) view.findViewById(R.id.player_artist);
+        loadingAnim = (CircularProgressView) view.findViewById((R.id.loading_anim));
         playPauseButton = ((ImageButton)view.findViewById(R.id.playPauseButton));
         playPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,35 +88,47 @@ public class RadioFragment extends Fragment {
                     if(radioService.isPlaying())
                     {
                         radioService.pause();
-                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
+                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_light));
                     }
                     else
                     {
                         radioService.play();
-                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause));
+                        playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_light));
                     }
                 }
             }
         });
 
+
         return view;
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
         RadioActivity.log("RadioFragment.onResume");
+
         Intent intent = new Intent(getActivity(), RadioService.class);
-        getActivity().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
+        intent.setAction(RadioService.ACTION_INIT);
+        getActivity().startService(intent);
+
+        intent = new Intent(getActivity(), RadioService.class);
+        getActivity().getApplicationContext().bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE);
+
+        MetadataManager.addListener(this);
+        MetadataManager.requestMetadata();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         RadioActivity.log("RadioFragment.onPause");
+        MetadataManager.removeListener(this);
         if(isBound)
         {
-            getActivity().unbindService(serviceConnection);
+            getActivity().getApplicationContext().unbindService(serviceConnection);
+            radioService.setOnStateChangeListener(null);
             isBound = false;
         }
     }
@@ -131,5 +140,46 @@ public class RadioFragment extends Fragment {
 //        ((RadioActivity) activity).onSectionAttached(
 //                getArguments().getInt(ARG_SECTION_NUMBER));
         ((RadioActivity) activity).restoreActionBar(getString(R.string.app_name));
+    }
+
+    @Override
+    public void onMetadataChanged(Metadata metadata) {
+        currentMetadata = metadata;
+        songTextView.setText(metadata.song);
+        artistTextView.setText(metadata.artist);
+    }
+
+    @Override
+    public void onStateChange(RadioService.RadioState state) {
+        switch(state)
+        {
+            case CONNECTING:
+            case BUFFERING:
+                mainRadioLayout.setVisibility(View.VISIBLE);
+                disconnectedLayout.setVisibility(View.INVISIBLE);
+                playPauseButton.setEnabled(false);
+                loadingAnim.setVisibility(View.VISIBLE);
+                playPauseButton.setImageDrawable(null);
+                break;
+            case PAUSED:
+                mainRadioLayout.setVisibility(View.VISIBLE);
+                disconnectedLayout.setVisibility(View.INVISIBLE);
+                playPauseButton.setEnabled(true);
+                loadingAnim.setVisibility(View.INVISIBLE);
+                playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_arrow_light));
+                break;
+            case PLAYING:
+                mainRadioLayout.setVisibility(View.VISIBLE);
+                disconnectedLayout.setVisibility(View.INVISIBLE);
+                playPauseButton.setEnabled(true);
+                loadingAnim.setVisibility(View.INVISIBLE);
+                playPauseButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_light));
+                break;
+            case DISCONNECTED:
+                mainRadioLayout.setVisibility(View.INVISIBLE);
+                disconnectedLayout.setVisibility(View.VISIBLE);
+                playPauseButton.setEnabled(false);
+                break;
+        }
     }
 }

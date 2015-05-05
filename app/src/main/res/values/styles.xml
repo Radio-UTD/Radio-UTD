@@ -1,85 +1,89 @@
 <resources>
 
-    <color name="card_shadow">#14000000</color>
-    <color name="card_color">#FFF</color>
-
-    <color name="main_bg">#EEE</color>
-    <color name="nav_list_item_bg">#FFF</color>
-    <color name="nav_list_bg">#FFF</color>
-    <!--<color name="nav_list_item_bg_pressed">#DDD</color>-->
-    <color name="nav_list_item_bg_selected">#EEE</color>
-
-    <color name="primary_text_color">#555</color>
-    <color name="secondary_text_color">#999</color>
-    <color name="tertiary_text_color">#B5B5B5</color>
-
-    <color name="action_bar_color">#E98300</color>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/main_bg</item>
-        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/action_bar_color</item>
-        <item name="background">@color/action_bar_color</item>
+    <!-- Enables spinny burger-arrow nav drawer icon -->
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="AppTheme.NavDrawer">
         <item name="android:background">@color/nav_list_bg</item>
     </style>
+
     <style name="AppTheme.NavDrawer.Item">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
-        <item name="android:paddingLeft">15dp</item>
         <item name="android:background">@drawable/nav_list_item_bg</item>
         <item name="android:textColor">@color/primary_text_color</item>
     </style>
 
-    <style name="ThumbnailCard">
-        <!--<item name="orientation">vertical</item>-->
-        <!--<item name="android:layout_width">match_parent</item>-->
-        <!--<item name="android:layout_height">wrap_content</item>-->
-        <!--<item name="android:background">@drawable/card_background</item>-->
-    </style>
-    <style name="ThumbnailCard.Title">
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <!--<item name="android:background">#0000</item>-->
-        <item name="android:textColor">@color/primary_text_color</item>
-    </style>
-
-    <style name="ThumbnailCard.Subtitle">
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:layout_marginTop">0dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <!--<item name="android:background">#0000</item>-->
-        <item name="android:textColor">@color/tertiary_text_color</item>
-    </style>
-
+    <!-- TODO: Change this on larger layouts like landscape -->
     <style name="ThumbnailCardGrid">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:numColumns">2</item>
-        <item name="android:stretchMode">columnWidth</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:clipToPadding">false</item>
-        <item name="android:verticalSpacing">8dp</item>
-        <item name="android:horizontalSpacing">8dp</item>
-        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:numColumns">1</item>
+    </style>
+
+    <style name="PlayerBar">
+        <item name="android:background">@color/player_main_color</item>
+    </style>
+
+    <style name="PlayerButton">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="NotificationTextPrimary" parent="android:TextAppearance.StatusBar.EventContent.Title"></style>
+
+    <style name="NotificationTextSecondary" parent="android:TextAppearance.StatusBar.EventContent"></style>
+
+    <style name="TextPrimary">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextSecondary">
+        <item name="android:textColor">@color/secondary_text_color</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextTertiary">
+        <item name="android:textColor">@color/tertiary_text_color</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextPrimary.Large" parent="TextPrimary">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextSecondary.Large" parent="TextSecondary">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextTertiary.Large" parent="TextTertiary">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="PlayerShowTitleText">
+        <item name="android:textColor">@color/primary_text_color_inverse</item>
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="PlayerShowDJText">
+        <item name="android:textColor">@color/secondary_text_color_inverse</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="FABPaddingFix">
+        <item name="android:layout_marginTop">-36dp</item>
     </style>
 
 </resources>
