@@ -33,13 +33,25 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="Camping Out with Camps" />
+                android:text="Camping Out" />
 
             <TextView
                 android:id="@+id/show_card_subtitle"
-                style="@style/TextPrimary"
+                style="@style/TextSecondary.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="with Camps" />
+
+            <TextView
+                android:id="@+id/show_card_subsubtitle"
+                style="@style/TextTertiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"

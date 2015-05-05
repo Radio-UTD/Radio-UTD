@@ -67,6 +67,7 @@ public class ThumbnailCardAdapter extends BaseAdapter {
         }
         ((TextView)view.findViewById(R.id.show_card_title)).setText(list.get(i).getTitle());
         ((TextView)view.findViewById(R.id.show_card_subtitle)).setText(list.get(i).getSubtitle());
+        ((TextView)view.findViewById(R.id.show_card_subsubtitle)).setText(list.get(i).getSubsubtitle());
         ((ImageView)view.findViewById(R.id.show_card_image)).setImageDrawable(list.get(i).getThumbnail());
         return view;
     }

@@ -1,5 +1,6 @@
 package com.utd.radio;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -69,5 +70,10 @@ public class RadioActivity extends ActionBarActivity
             actionBar.setTitle(mTitle);
         }
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

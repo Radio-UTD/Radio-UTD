@@ -9,11 +9,13 @@ public class ThumbnailCard {
     private Drawable thumbnail;
     private String title;
     private String subtitle;
+    private String subsubtitle;
 
-    public ThumbnailCard(String title, String subtitle, Drawable thumbnail)
+    public ThumbnailCard(String title, String subtitle, String subsubtitle, Drawable thumbnail)
     {
         this.title = title;
         this.subtitle = subtitle;
+        this.subsubtitle = subsubtitle;
         this.thumbnail = thumbnail;
     }
 
@@ -24,6 +26,8 @@ public class ThumbnailCard {
     public String getSubtitle() {
         return subtitle;
     }
+
+    public String getSubsubtitle() { return subsubtitle; }
 
     public Drawable getThumbnail() {
         return thumbnail;
