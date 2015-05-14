@@ -15,6 +15,8 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.utd.radio.R;
 import com.utd.radio.adapters.ShowsFragmentPagerAdapter;
 
+import java.util.Calendar;
+
 public class TabbedShowsFragment extends Fragment {
 
     ShowsFragmentPagerAdapter adapter;
@@ -41,6 +43,9 @@ public class TabbedShowsFragment extends Fragment {
         viewPager.setAdapter(adapter);
         pagerTabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.shows_pager_tabs);
         pagerTabs.setViewPager(viewPager);
+
+        Calendar c = Calendar.getInstance();
+        viewPager.setCurrentItem(c.get(Calendar.DAY_OF_WEEK) - 1);
 
         return rootView;
     }
